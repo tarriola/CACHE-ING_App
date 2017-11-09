@@ -1,0 +1,34 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="group2.tcss450.uw.edu.cache_ing_app.VerificationFragment">
+
+
+    <TextView
+        android:id="@+id/verify_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="125dp"
+        android:gravity="center_horizontal"
+        android:text="@string/verify_email"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/verification_code_editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:ems="10"
+        android:hint="@string/verify_code"
+        android:gravity="center_horizontal"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/submit_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/submit_verification_code" />
+
+</LinearLayout>
