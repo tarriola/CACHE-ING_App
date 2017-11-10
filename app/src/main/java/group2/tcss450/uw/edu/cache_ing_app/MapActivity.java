@@ -3,6 +3,7 @@ package group2.tcss450.uw.edu.cache_ing_app;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +31,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class MapActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -38,12 +49,13 @@ public class MapActivity extends AppCompatActivity implements
 
     private static final String TAG = "MapActivity";
 
+    private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+    private static final String API_KEY = "AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4";
+    private static final int NEARBY_RADIUS = 500;
+
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final float ZOOM = 15f;
-    public static final String LATITUDE = "lat";
-    public static final String LONGITUDE = "lng";
-
     /**
      * The desired interval for location updates. Inexact. Updates may be
      more or less frequent.
@@ -96,21 +108,25 @@ public class MapActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
+                Log.d(TAG, "onClick: executing task;");
+                AsyncTask<String, Void, String> task = new PlacesWebServiceTask();
+                task.execute(PLACES_URL);
+                Log.d(TAG, "onClick: task done executing");
+//                LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+//                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
 
             }
         });
 
         if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
+                FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION)
+                COURSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
-                            , Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{FINE_LOCATION
+                            , FINE_LOCATION},
                     MY_PERMISSIONS_LOCATIONS);
 
         }
@@ -158,9 +174,9 @@ public class MapActivity extends AppCompatActivity implements
         // moves to a new location, and then changes the device orientation, the original location
         // is displayed as the activity is re-created.
         if (mCurrentLocation == null) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 initializeMap();
@@ -200,12 +216,10 @@ public class MapActivity extends AppCompatActivity implements
 //        mGoogleMap.addMarker(new MarkerOptions().
 //                position(latLng).
 //                title("Marker in Tacoma"));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-//       mGoogleMap.setMyLocationEnabled(true);
-//        mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.)
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
 
     }
@@ -245,8 +259,8 @@ public class MapActivity extends AppCompatActivity implements
     protected void startLocationUpdates() {
         // The final argument to {@code requestLocationUpdates()} is aLocationListener
         //(http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
@@ -293,7 +307,8 @@ public class MapActivity extends AppCompatActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             return;
         }
@@ -302,5 +317,77 @@ public class MapActivity extends AppCompatActivity implements
                 mCurrentLocation.getLongitude()), ZOOM));
     }
 
+    private class PlacesWebServiceTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            String parameters = strings[0];
+            parameters += "?location=" + mCurrentLocation.getLatitude()
+                    + "," + mCurrentLocation.getLongitude();
+            parameters += "&radius=" + NEARBY_RADIUS;
+            parameters += "&key=" + API_KEY;
+            Log.d(TAG, "doInBackground: " + parameters);
+            try {
+                URL urlObject = new URL(parameters);
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s = "";
+                while ((s = buffer.readLine()) != null) {
+                    response += s;
+                }
+            } catch (Exception e) {
+                response = "Unable to connect, Reason: "
+                        + e.getMessage();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return response;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                Log.d(TAG, "onPostExecute: begin parsing json");
+                parseJSON(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            // Something wrong with the network or the URL.
+//            if (result.startsWith("Unable to")) {
+//                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+//                        .show();
+//                return;
+//            } else if (result.startsWith("{\"code\":200")) {
+//                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+//                        .show();
+//            } else if (result.startsWith("{\"code\":300")) {
+//                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+//                        .show();
+//            } else {
+//                //String[] string = result.split("\"");
+//
+//                LoginFragment loginFragment = new LoginFragment();
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.fragment_container, loginFragment)
+//                        .addToBackStack(null).commit();
+//
+//            }
+//            Log.d("Places Result", result);
+        }
 
+        private void parseJSON(String data) throws JSONException {
+            JSONObject json = new JSONObject(data);
+            JSONArray jsonArray = json.getJSONArray("results");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject result = jsonArray.getJSONObject(i);
+
+                String name = result.getString("name");
+                Log.d(TAG, "parseJSON: " + name);
+            }
+        }
+    }
 }

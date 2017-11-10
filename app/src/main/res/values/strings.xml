@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">CACHE-ING!</string>
 
+    <string name="api_key_MapandPlaces">AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4</string>
+
     <string name="username_textView">Username</string>
     <string name="username_editText">Enter username/email...</string>
 

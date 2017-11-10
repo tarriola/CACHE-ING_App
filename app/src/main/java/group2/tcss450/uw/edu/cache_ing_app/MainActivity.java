@@ -25,9 +25,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String TAG = "MainActivity";
 
-    public static final String LATITUDE = "lat";
-    public static final String LONGITUDE = "lng";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
