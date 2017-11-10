@@ -35,6 +35,21 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:rippleColor="?attr/colorBackgroundFloating"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/placesFab"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="#ffffff"
+        app:backgroundTint="?attr/colorBackgroundFloating"
+        app:layout_anchor="@+id/map"
+        app:layout_anchorGravity="top|right"
+        app:rippleColor="?attr/actionMenuTextColor"
+        app:srcCompat="@android:drawable/ic_menu_myplaces" />
+
 
 </android.support.design.widget.CoordinatorLayout>

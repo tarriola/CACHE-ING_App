@@ -26,6 +26,13 @@ public class PlacesData {
 
         parseData(data);
 
+        if (mLength == 0) {
+            mPlaceNameList = new String[0];
+            mPlaceLatList = new double[0];
+            mPlaceLngList = new double[0];
+
+        }
+
 
 
     }
@@ -66,6 +73,8 @@ public class PlacesData {
             e.printStackTrace();
         }
     }
+
+    public String[] getNameList() { return mPlaceNameList; }
 
     private boolean isValid(int index) {
         boolean result = false;

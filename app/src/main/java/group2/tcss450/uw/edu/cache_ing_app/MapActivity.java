@@ -1,6 +1,7 @@
 package group2.tcss450.uw.edu.cache_ing_app;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,10 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -54,7 +53,7 @@ public class MapActivity extends AppCompatActivity implements
 
     private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
     private static final String API_KEY = "AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4";
-    private static final int NEARBY_RADIUS = 100;
+    private static final int NEARBY_RADIUS = 300;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -114,13 +113,20 @@ public class MapActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(mCurrentLocation.getLatitude(),
+                                mCurrentLocation.getLongitude()), ZOOM));
+            }
+        });
+
+        FloatingActionButton placesFab = (FloatingActionButton) findViewById(R.id.placesFab);
+        placesFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Log.d(TAG, "onClick: executing task;");
                 AsyncTask<String, Void, String> task = new PlacesWebServiceTask();
                 task.execute(PLACES_URL);
-                Log.d(TAG, "onClick: task done executing");
-//                LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-//                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f));
-
+//                Log.d(TAG, "onClick: task done executing");
             }
         });
 
@@ -147,28 +153,6 @@ public class MapActivity extends AppCompatActivity implements
                         .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     /**
      *
@@ -235,17 +219,15 @@ public class MapActivity extends AppCompatActivity implements
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
         Log.d(TAG, mCurrentLocation.toString());
-        mGoogleMap.clear();
+//        mGoogleMap.clear();
 
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//        mGoogleMap.addMarker(new MarkerOptions().
-//                position(latLng).
-//                title("Marker in Tacoma"));
+
         if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
 
     }
 
@@ -344,8 +326,6 @@ public class MapActivity extends AppCompatActivity implements
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),
-//                mCurrentLocation.getLongitude()), ZOOM));
     }
 
     private class PlacesWebServiceTask extends AsyncTask<String, Void, String> {
@@ -382,15 +362,38 @@ public class MapActivity extends AppCompatActivity implements
             Log.d(TAG, "onPostExecute: begin parsing json");
             PlacesData placesData = new PlacesData(result);
 
-//            int size = placesData.getSize();
-//
-//            for (int i = 0; i < size; i++) {
-//                Log.d(TAG, "placeData: "
-//                    + placesData.getPlaceName(i) + " = "
-//                    + placesData.getPlaceLatitude(i) + ", "
-//                    + placesData.getPlaceLongitude(i));
-//            }
-        }
+            showPlacesList(placesData);
 
+        }
+    }
+
+    /**
+     * shows nearby places
+     *
+     * @param places
+     */
+    private void showPlacesList(final PlacesData places) {
+        // Ask the user to choose the place where they are now.
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            private LatLng placeLatLng;
+            private String placeName;
+
+            @Override
+            public void onClick(DialogInterface dialog, int index) {
+                placeLatLng = new LatLng(places.getPlaceLatitude(index), places.getPlaceLongitude(index));
+                placeName = places.getPlaceName(index);
+
+                mGoogleMap.clear();
+                mGoogleMap.addMarker(new MarkerOptions()
+                        .title(placeName)
+                        .position(placeLatLng));
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeLatLng, ZOOM));
+            }
+        };
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Nearby Places")
+                .setItems(places.getNameList(), listener)
+                .show();
     }
 }
