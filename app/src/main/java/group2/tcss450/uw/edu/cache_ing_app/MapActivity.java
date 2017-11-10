@@ -54,7 +54,7 @@ public class MapActivity extends AppCompatActivity implements
 
     private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
     private static final String API_KEY = "AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4";
-    private static final int NEARBY_RADIUS = 500;
+    private static final int NEARBY_RADIUS = 100;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -80,7 +80,7 @@ public class MapActivity extends AppCompatActivity implements
     private GoogleMap mGoogleMap;
 
     /**
-     * Creates view
+     *
      * @param savedInstanceState
      */
     @Override
@@ -139,7 +139,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     * Displays map.
+     *
      */
     private void initializeMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)
@@ -171,7 +171,7 @@ public class MapActivity extends AppCompatActivity implements
 //    }
 
     /**
-     * Connects after permission is granted.
+     *
      * @param bundle
      */
     @Override
@@ -202,7 +202,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     * Lost connection.
+     *
      * @param i
      */
     @Override
@@ -215,7 +215,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     * Reason for lost connection.
+     *
      * @param connectionResult
      */
     @Override
@@ -228,7 +228,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     * Updates current location
+     *
      * @param location
      */
     @Override
@@ -250,7 +250,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     * Asks user for location permission.
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -312,9 +312,6 @@ public class MapActivity extends AppCompatActivity implements
         }
     }
 
-    /**
-     * Disconnects
-     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -323,9 +320,6 @@ public class MapActivity extends AppCompatActivity implements
             mGoogleApiClient.disconnect();
     }
 
-    /**
-     * Start
-     */
     protected void onStart() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
@@ -333,9 +327,6 @@ public class MapActivity extends AppCompatActivity implements
         super.onStart();
     }
 
-    /**
-     * Stop
-     */
     protected void onStop() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
@@ -343,10 +334,6 @@ public class MapActivity extends AppCompatActivity implements
         super.onStop();
     }
 
-    /**
-     *
-     * @param googleMap
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -361,9 +348,6 @@ public class MapActivity extends AppCompatActivity implements
 //                mCurrentLocation.getLongitude()), ZOOM));
     }
 
-    /**
-     * A private class that handles backend calls from the data base.
-     */
     private class PlacesWebServiceTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
@@ -393,58 +377,20 @@ public class MapActivity extends AppCompatActivity implements
             }
             return response;
         }
-
-        /**
-         * Handles interactions after execution.
-         * @param result
-         */
         @Override
         protected void onPostExecute(String result) {
-            try {
-                Log.d(TAG, "onPostExecute: begin parsing json");
-                parseJSON(result);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            // Something wrong with the network or the URL.
-//            if (result.startsWith("Unable to")) {
-//                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
-//                        .show();
-//                return;
-//            } else if (result.startsWith("{\"code\":200")) {
-//                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
-//                        .show();
-//            } else if (result.startsWith("{\"code\":300")) {
-//                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
-//                        .show();
-//            } else {
-//                //String[] string = result.split("\"");
+            Log.d(TAG, "onPostExecute: begin parsing json");
+            PlacesData placesData = new PlacesData(result);
+
+//            int size = placesData.getSize();
 //
-//                LoginFragment loginFragment = new LoginFragment();
-//                getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.fragment_container, loginFragment)
-//                        .addToBackStack(null).commit();
-//
+//            for (int i = 0; i < size; i++) {
+//                Log.d(TAG, "placeData: "
+//                    + placesData.getPlaceName(i) + " = "
+//                    + placesData.getPlaceLatitude(i) + ", "
+//                    + placesData.getPlaceLongitude(i));
 //            }
-//            Log.d("Places Result", result);
         }
 
-        /**
-         * Parses JSON objects.
-         * @param data
-         * @throws JSONException
-         */
-        private void parseJSON(String data) throws JSONException {
-            JSONObject json = new JSONObject(data);
-            JSONArray jsonArray = json.getJSONArray("results");
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject result = jsonArray.getJSONObject(i);
-
-                String name = result.getString("name");
-                Log.d(TAG, "parseJSON: " + name);
-            }
-        }
     }
 }
