@@ -25,6 +25,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,6 +44,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    /**
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (mListener != null) {
@@ -67,6 +78,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
+
+    /**
+     *
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -78,12 +94,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     *
+     */
     public interface OnFragmentInteractionListener {
 
         void loginFragmentInteraction(String c, String c2);

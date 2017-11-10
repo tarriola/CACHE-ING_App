@@ -41,6 +41,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ *
+ */
 public class MapActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -76,7 +79,10 @@ public class MapActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mGoogleMap;
 
-
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,6 +138,9 @@ public class MapActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     */
     private void initializeMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager()
@@ -161,6 +170,10 @@ public class MapActivity extends AppCompatActivity implements
 //        return super.onOptionsItemSelected(item);
 //    }
 
+    /**
+     *
+     * @param bundle
+     */
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         // If the initial location was never previously requested, we use
@@ -188,6 +201,10 @@ public class MapActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     *
+     * @param i
+     */
     @Override
     public void onConnectionSuspended(int i) {
         // The connection to Google Play services was lost for some reason. We call connect() to
@@ -197,6 +214,10 @@ public class MapActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     *
+     * @param connectionResult
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // Refer to the javadoc for ConnectionResult to see what error codes might be returned in
@@ -206,6 +227,10 @@ public class MapActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     *
+     * @param location
+     */
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
@@ -224,6 +249,12 @@ public class MapActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -313,8 +344,8 @@ public class MapActivity extends AppCompatActivity implements
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),
-                mCurrentLocation.getLongitude()), ZOOM));
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),
+//                mCurrentLocation.getLongitude()), ZOOM));
     }
 
     private class PlacesWebServiceTask extends AsyncTask<String, Void, String> {

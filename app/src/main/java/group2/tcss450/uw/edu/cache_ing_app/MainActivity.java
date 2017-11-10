@@ -14,6 +14,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ *
+ */
 public class MainActivity extends AppCompatActivity implements
         StartupFragment.OnFragmentInteractionListener,
         LoginFragment.OnFragmentInteractionListener,
@@ -25,6 +28,10 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String TAG = "MainActivity";
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     * @param c
+     */
     @Override
     public void startUpFragmentInteraction(String c) {
         if(c == "Login") {
@@ -56,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     * @param c
+     * @param c2
+     */
     @Override
     public void loginFragmentInteraction(String c, String c2) {
         if(c.equals("forgot") && c.equals("forgot")) {
@@ -68,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     */
     private class LoginWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "login.php";
         @Override
@@ -94,6 +113,11 @@ public class MainActivity extends AppCompatActivity implements
             }
             return response;
         }
+
+        /**
+         *
+         * @param result
+         */
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
@@ -119,6 +143,13 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     * @param email
+     * @param password
+     * @param firstN
+     * @param lastN
+     */
     @Override
     public void registerFragmentInteraction(String email, String password, String firstN, String lastN) {
         AsyncTask<String, Void, String> task = new RegisterWebServiceTask();
@@ -126,6 +157,9 @@ public class MainActivity extends AppCompatActivity implements
         Log.d("Register", email);
     }
 
+    /**
+     *
+     */
     private class RegisterWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "register.php";
         private String mEmail;
@@ -157,6 +191,11 @@ public class MainActivity extends AppCompatActivity implements
             }
             return response;
         }
+
+        /**
+         *
+         * @param result
+         */
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
@@ -186,6 +225,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     * @param email
+     * @param code
+     */
     @Override
     public void verificationFragmentInteraction(String email, String code) {
         AsyncTask<String, Void, String> task = new VerificationWebServiceTask();
@@ -193,6 +237,9 @@ public class MainActivity extends AppCompatActivity implements
         task.execute(PARTIAL_URL, email, code);
     }
 
+    /**
+     *
+     */
     private class VerificationWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "verification.php";
         @Override
@@ -219,6 +266,11 @@ public class MainActivity extends AppCompatActivity implements
             }
             return response;
         }
+
+        /**
+         *
+         * @param result
+         */
         @Override
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
