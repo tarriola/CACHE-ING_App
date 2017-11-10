@@ -20,7 +20,10 @@ public class PlacesData {
     private double[] mPlaceLngList;
     private int mLength;
 
-
+    /**
+    * Handles the GooglePlaces data.
+    * @param: data - the data for a places location.
+    **/
     public PlacesData(String data) {
         mLength = 0;
 
@@ -37,6 +40,11 @@ public class PlacesData {
 
     }
 
+
+    /**
+    * Parses the google places data.
+    * @param: data - the data for a places location.
+    **/
     private void parseData(String data)  {
         Log.d(TAG, "parseData: data");
         try {
@@ -74,15 +82,29 @@ public class PlacesData {
         }
     }
 
+    /**
+    * Gets a list of places names.
+    * @return: returns a list of places names.
+    **/
     public String[] getNameList() { return mPlaceNameList; }
-
+    
+    /**
+    * Checks that the location is a valid index.
+    * @param: index - the index you wish to check.
+    * @return: returns true if the index exists, false otherwise.
+    **/
     private boolean isValid(int index) {
         boolean result = false;
         if (mLength > 0 && index >= 0 && index < mLength)
             result = true;
         return result;
     }
-
+    
+    /**
+    * Gets the name of a place based on index.
+    * @param: index - the index you wish to check.
+    * @return: returns a string with the name of the place from the array.
+    **/
     public String getPlaceName(int index) {
         String result = "";
         if (isValid(index)) {
@@ -91,6 +113,11 @@ public class PlacesData {
         return result;
     }
 
+    /**
+    * Gets the latitude of a place based on index.
+    * @param: index - the index you wish to check.
+    * @return: returns double with latitude of place.
+    **/
     public double getPlaceLatitude(int index) {
         double result = 0.0;
         if (isValid(index)) {
@@ -98,7 +125,12 @@ public class PlacesData {
         }
         return result;
     }
-
+    
+    /**
+    * Gets the longitude of a place based on index.
+    * @param: index - the index you wish to check.
+    * @return: returns double with longitude of place.
+    **/
     public double getPlaceLongitude(int index) {
         double result = 0.0;
         if (isValid(index)) {
@@ -106,7 +138,10 @@ public class PlacesData {
         }
         return result;
     }
-
+    /**
+    * Check the length of all places in array.
+    * @return: returns an int of array size.
+    **/
     public int getSize() { return mLength; }
 
 }
