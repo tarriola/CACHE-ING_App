@@ -22,11 +22,20 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
     private static final String TAG = "VerificationFragment";
 
 
+    /**
+     *
+     */
     public VerificationFragment() {
         // Required empty public constructor
     }
 
-
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,6 +46,10 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
         return v;
     }
 
+    /**
+     *
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -48,12 +61,19 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if(mListener != null) {
@@ -72,6 +92,9 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
         }
     }
 
+    /**
+     *
+     */
     public interface OnFragmentInteractionListener {
         void verificationFragmentInteraction(String email, String code);
     }

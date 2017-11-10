@@ -17,12 +17,21 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-
+    /**
+     *
+     */
     public StartupFragment() {
         // Required empty public constructor
     }
 
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,6 +43,11 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
 
         return v;
     }
+
+    /**
+     *
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -45,12 +59,19 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     *
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         if(mListener != null) {
@@ -64,6 +85,9 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     *
+     */
     public interface OnFragmentInteractionListener {
         void startUpFragmentInteraction(String c);
     }

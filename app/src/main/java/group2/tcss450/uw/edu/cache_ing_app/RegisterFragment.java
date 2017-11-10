@@ -25,6 +25,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     }
 
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,6 +42,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
         b.setOnClickListener(this);
         return v;
     }
+
+    /**
+     *
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -46,12 +58,19 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    /**
+     *
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /**
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
 
@@ -92,6 +111,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    /**
+     *
+     */
     public interface OnFragmentInteractionListener {
         void registerFragmentInteraction(String email, String firstN, String lastN, String password);
     }
