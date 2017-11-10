@@ -30,7 +30,7 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     *
+     * Creates view.
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -47,7 +47,7 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     *
+     * Attach
      * @param context
      */
     @Override
@@ -62,7 +62,7 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     *
+     * Detach
      */
     @Override
     public void onDetach() {
@@ -71,7 +71,7 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     *
+     * Handles onclick interaction.
      * @param v
      */
     @Override
@@ -93,7 +93,7 @@ public class VerificationFragment extends Fragment implements View.OnClickListen
     }
 
     /**
-     *
+     * Tells front end what to do after clicked.
      */
     public interface OnFragmentInteractionListener {
         void verificationFragmentInteraction(String email, String code);

@@ -15,7 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- *
+ * Main activity that holds the activity and handles the asynctasks.
  */
 public class MainActivity extends AppCompatActivity implements
         StartupFragment.OnFragmentInteractionListener,
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String TAG = "MainActivity";
 
     /**
-     *
+     * Creating the first view and displaying it.
      * @param savedInstanceState
      */
     @Override
@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
-     * @param c
+     * Handles the interaction on the startUp fragment when the two buttons are clicked.
+     * @param c takes in a string and does something depending on what string gets passed.
      */
     @Override
     public void startUpFragmentInteraction(String c) {
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Handles the login fragment interactions.
      * @param c
      * @param c2
      */
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * A private class that handles backend calls from the data base.
      */
     private class LoginWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "login.php";
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         /**
-         *
+         * What happens after conditions are met after executing.
          * @param result
          */
         @Override
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Handles the interactions in the register fragment.
      * @param email
      * @param password
      * @param firstN
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * A private class that handles backend calls from the data base.
      */
     private class RegisterWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "register.php";
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         /**
-         *
+         * Handles actions after execution.
          * @param result
          */
         @Override
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Handles the interactions made on th everification fragment.
      * @param email
      * @param code
      */
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * A private class that handles backend calls from the data base.
      */
     private class VerificationWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "verification.php";
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         /**
-         *
+         * Handles stuff after execution.
          * @param result
          */
         @Override

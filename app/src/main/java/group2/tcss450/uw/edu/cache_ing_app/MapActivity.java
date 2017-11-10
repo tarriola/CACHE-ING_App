@@ -80,7 +80,7 @@ public class MapActivity extends AppCompatActivity implements
     private GoogleMap mGoogleMap;
 
     /**
-     *
+     * Creates view
      * @param savedInstanceState
      */
     @Override
@@ -139,7 +139,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Displays map.
      */
     private void initializeMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)
@@ -171,7 +171,7 @@ public class MapActivity extends AppCompatActivity implements
 //    }
 
     /**
-     *
+     * Connects after permission is granted.
      * @param bundle
      */
     @Override
@@ -202,7 +202,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Lost connection.
      * @param i
      */
     @Override
@@ -215,7 +215,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Reason for lost connection.
      * @param connectionResult
      */
     @Override
@@ -228,7 +228,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Updates current location
      * @param location
      */
     @Override
@@ -250,7 +250,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Asks user for location permission.
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -312,6 +312,9 @@ public class MapActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Disconnects
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -320,6 +323,9 @@ public class MapActivity extends AppCompatActivity implements
             mGoogleApiClient.disconnect();
     }
 
+    /**
+     * Start
+     */
     protected void onStart() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
@@ -327,6 +333,9 @@ public class MapActivity extends AppCompatActivity implements
         super.onStart();
     }
 
+    /**
+     * Stop
+     */
     protected void onStop() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
@@ -334,6 +343,10 @@ public class MapActivity extends AppCompatActivity implements
         super.onStop();
     }
 
+    /**
+     *
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -348,6 +361,9 @@ public class MapActivity extends AppCompatActivity implements
 //                mCurrentLocation.getLongitude()), ZOOM));
     }
 
+    /**
+     * A private class that handles backend calls from the data base.
+     */
     private class PlacesWebServiceTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
@@ -377,6 +393,11 @@ public class MapActivity extends AppCompatActivity implements
             }
             return response;
         }
+
+        /**
+         * Handles interactions after execution.
+         * @param result
+         */
         @Override
         protected void onPostExecute(String result) {
             try {
@@ -409,6 +430,11 @@ public class MapActivity extends AppCompatActivity implements
 //            Log.d("Places Result", result);
         }
 
+        /**
+         * Parses JSON objects.
+         * @param data
+         * @throws JSONException
+         */
         private void parseJSON(String data) throws JSONException {
             JSONObject json = new JSONObject(data);
             JSONArray jsonArray = json.getJSONArray("results");

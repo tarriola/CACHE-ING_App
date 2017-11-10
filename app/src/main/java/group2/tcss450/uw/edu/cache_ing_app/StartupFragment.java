@@ -18,7 +18,7 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
     private OnFragmentInteractionListener mListener;
 
     /**
-     *
+     * Starts
      */
     public StartupFragment() {
         // Required empty public constructor
@@ -26,7 +26,7 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
 
 
     /**
-     *
+     * Creates view
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -45,7 +45,7 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
+     * Attach
      * @param context
      */
     @Override
@@ -60,7 +60,7 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
+     * Detach
      */
     @Override
     public void onDetach() {
@@ -69,7 +69,7 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
+     * Handles when clicked.
      * @param view
      */
     @Override
@@ -86,7 +86,7 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
+     * Tells what to do after clicked.
      */
     public interface OnFragmentInteractionListener {
         void startUpFragmentInteraction(String c);
