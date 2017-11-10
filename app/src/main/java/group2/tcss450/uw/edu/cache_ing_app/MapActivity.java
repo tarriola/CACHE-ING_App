@@ -41,7 +41,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- *
+ * An activity that will be used for our maps.
  */
 public class MapActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
@@ -79,7 +79,7 @@ public class MapActivity extends AppCompatActivity implements
     private GoogleMap mGoogleMap;
 
     /**
-     *
+     * onCreate function.
      * @param savedInstanceState
      */
     @Override
@@ -145,7 +145,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Initializes the map.
      */
     private void initializeMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)
@@ -155,7 +155,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Requests current location from FusedAPI, then calls initializeMap().
      * @param bundle
      */
     @Override
@@ -186,7 +186,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Called if connection is lost.
      * @param i
      */
     @Override
@@ -199,7 +199,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Called if connection failed.
      * @param connectionResult
      */
     @Override
@@ -212,7 +212,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Called when location changes to update location and update camera for map.
      * @param location
      */
     @Override
@@ -232,7 +232,7 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Checks if Locations permissions are enabled or not.
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -294,6 +294,9 @@ public class MapActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+    * Disconnects connection and destroys.
+    **/
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -302,6 +305,9 @@ public class MapActivity extends AppCompatActivity implements
             mGoogleApiClient.disconnect();
     }
 
+    /**
+    * Connects connection and starts.
+    **/
     protected void onStart() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
@@ -309,6 +315,9 @@ public class MapActivity extends AppCompatActivity implements
         super.onStart();
     }
 
+    /**
+    * Disconnects connection and stops.
+    **/
     protected void onStop() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
@@ -316,6 +325,10 @@ public class MapActivity extends AppCompatActivity implements
         super.onStop();
     }
 
+    /**
+    * Checks if location data is enabled, sets map.
+    * @param: googleMap
+    **/
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -328,6 +341,9 @@ public class MapActivity extends AppCompatActivity implements
         mGoogleMap.setMyLocationEnabled(true);
     }
 
+    /**
+    * Async web service task for GooglePlaces.
+    **/
     private class PlacesWebServiceTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
@@ -357,6 +373,10 @@ public class MapActivity extends AppCompatActivity implements
             }
             return response;
         }
+        
+        /**
+        * onPostExecute for AsyncTask.
+        **/
         @Override
         protected void onPostExecute(String result) {
             Log.d(TAG, "onPostExecute: begin parsing json");
