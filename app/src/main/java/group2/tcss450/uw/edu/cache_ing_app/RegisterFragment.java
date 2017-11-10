@@ -26,7 +26,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
 
 
     /**
-     *
+     * Creates view
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -44,7 +44,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     }
 
     /**
-     *
+     * Attach
      * @param context
      */
     @Override
@@ -59,7 +59,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     }
 
     /**
-     *
+     * Detach
      */
     @Override
     public void onDetach() {
@@ -68,7 +68,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     }
 
     /**
-     *
+     * Handles the buttons click listener.
      * @param v
      */
     @Override
@@ -112,7 +112,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     }
 
     /**
-     *
+     *Handles interaction when clicked.
      */
     public interface OnFragmentInteractionListener {
         void registerFragmentInteraction(String email, String firstN, String lastN, String password);

@@ -26,7 +26,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     /**
-     *
+     * Creates view
      * @param inflater
      * @param container
      * @param savedInstanceState
@@ -45,7 +45,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
     /**
-     *
+     * handles when clicked.
      * @param v
      */
     @Override
@@ -80,7 +80,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
+     * Attach
      * @param context
      */
     @Override
@@ -95,7 +95,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
+     * Detach
      */
     @Override
     public void onDetach() {
@@ -104,7 +104,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
+     * Tells frontend what to doa fter clicked.
      */
     public interface OnFragmentInteractionListener {
 
