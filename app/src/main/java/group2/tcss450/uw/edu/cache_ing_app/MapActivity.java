@@ -53,7 +53,7 @@ public class MapActivity extends AppCompatActivity implements
 
     private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
     private static final String API_KEY = "AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4";
-    private static final int NEARBY_RADIUS = 300;
+    private static final int NEARBY_RADIUS = 200;
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -130,18 +130,14 @@ public class MapActivity extends AppCompatActivity implements
             }
         });
 
-        if (ActivityCompat.checkSelfPermission(this,
-                FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this,
-                COURSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{FINE_LOCATION
-                            , FINE_LOCATION},
-                    MY_PERMISSIONS_LOCATIONS);
+        if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+            ActivityCompat.requestPermissions(this, new String[]{FINE_LOCATION, FINE_LOCATION},
+                    MY_PERMISSIONS_LOCATIONS);
         }
+
+        initializeMap();
     }
 
     /**
@@ -176,7 +172,7 @@ public class MapActivity extends AppCompatActivity implements
                     && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                initializeMap();
+//                initializeMap();
                 if (mCurrentLocation != null)
                     Log.i(TAG, mCurrentLocation.toString());
                 startLocationUpdates();
@@ -227,7 +223,9 @@ public class MapActivity extends AppCompatActivity implements
                 && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        mGoogleMap.setMyLocationEnabled(true);
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
+
 
     }
 
@@ -250,7 +248,10 @@ public class MapActivity extends AppCompatActivity implements
 //                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 //                        return;
 //                    }
-//                    mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                     startLocationUpdates();
                 } else {
                     // permission denied, boo! Disable the
@@ -339,6 +340,8 @@ public class MapActivity extends AppCompatActivity implements
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),
+                mCurrentLocation.getLongitude()), ZOOM));
     }
 
     /**
