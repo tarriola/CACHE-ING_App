@@ -340,8 +340,8 @@ public class MapActivity extends AppCompatActivity implements
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),
-                mCurrentLocation.getLongitude()), ZOOM));
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),
+//                mCurrentLocation.getLongitude()), ZOOM));
     }
 
     /**
