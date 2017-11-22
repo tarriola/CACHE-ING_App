@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 /**
@@ -38,8 +39,8 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.fragment_startup, container, false);
         Button b= (Button) v.findViewById(R.id.login_button);
         b.setOnClickListener(this);
-        b = (Button) v.findViewById(R.id.register_button);
-        b.setOnClickListener(this);
+        TextView signUp = (TextView) v.findViewById(R.id.sign_up_here);
+        signUp.setOnClickListener(this);
 
         return v;
     }
@@ -79,8 +80,8 @@ public class StartupFragment extends Fragment implements View.OnClickListener {
                 case R.id.login_button:
                     mListener.startUpFragmentInteraction("Login");
                     break;
-                case R.id.register_button:
-                    mListener.startUpFragmentInteraction("Register");
+                case R.id.sign_up_here:
+                    mListener.startUpFragmentInteraction("SignUp");
             }
         }
     }

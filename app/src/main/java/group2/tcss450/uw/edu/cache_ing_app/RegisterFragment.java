@@ -36,10 +36,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_register, container, false);
-        Button b = (Button) v.findViewById(R.id.back_to_login);
+        Button b = (Button) v.findViewById(R.id.register_button_in_registration);
         b.setOnClickListener(this);
-        b = (Button) v.findViewById(R.id.register_button_in_registration);
-        b.setOnClickListener(this);
+//        b = (Button) v.findViewById(R.id.register_button_in_registration);
+//        b.setOnClickListener(this);
         return v;
     }
 
@@ -93,15 +93,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
 
                 if(userName.isEmpty() || (!(userName.contains("@") && userName.contains(".")))) {
                     userEmail.setError("Enter a valid email");
-                } else if (fName.isEmpty()) {
+                } if (fName.isEmpty()) {
                     firstName.setError("Enter your first name");
-                } else if (lName.isEmpty()) {
+                } if (lName.isEmpty()) {
                     lastName.setError("Enter your last name");
-                } else if (password.isEmpty() || (!(password.length() >= 6 && password.length() <= 12))
+                } if (password.isEmpty() || (!(password.length() >= 6 && password.length() <= 12))
                         || (!(password.matches(".*\\d+.*")))) {
                     userPassword.setError("Password must be between 6-12 characters long and " +
                             "have at least one number.");
-                } else if (!password.equals(confirmPassword)) {
+                } if (!password.equals(confirmPassword)) {
                     confirmPass.setError("Passwords do not match");
                 } else {
 

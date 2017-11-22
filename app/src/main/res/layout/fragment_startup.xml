@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@drawable/mapbackground"
+    android:background="@drawable/mapbackgroundstartup"
     android:backgroundTint="#80FFFFFF"
     android:backgroundTintMode="src_over"
     android:orientation="vertical"
@@ -14,18 +14,55 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/buttonshape"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="215dp"
+        android:width="150dp"
         android:text="@string/login_button1"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="200dp" />
 
-    <Button
-        android:id="@+id/register_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/buttonshape"
-        android:text="@string/register_button"
-        android:textColor="#FFFFFF" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sign_up_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="7dp"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:text="@string/sign_up_here_textbutton"
+            android:textColor="@android:color/holo_blue_dark"
+            app:layout_constraintBaseline_toBaselineOf="@+id/are_are_reg"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@+id/are_are_reg"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/are_are_reg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/have_an_account"
+            android:textSize="15sp"
+            tools:layout_constraintTop_creator="1"
+            tools:layout_constraintRight_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="225dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintHorizontal_bias="0.42"
+            app:layout_constraintVertical_bias="0.91"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
 </LinearLayout>

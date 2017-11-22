@@ -62,7 +62,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     String password = passwordLogin.getText().toString();
                     if(userName.isEmpty()) {
                         userNameLogin.setError("Enter your username/email");
-                    } else if (password.isEmpty()) {
+                    } if (password.isEmpty()) {
                         passwordLogin.setError("Enter your password");
                     } else {
                         if(userName instanceof String && password instanceof String) {

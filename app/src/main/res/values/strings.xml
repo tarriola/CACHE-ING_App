@@ -4,7 +4,7 @@
     <string name="api_key_MapandPlaces">AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4</string>
 
     <string name="username_textView">Username</string>
-    <string name="username_editText">Enter username/email...</string>
+    <string name="username_editText">Enter email...</string>
 
     <string name="password_textview">Password</string>
     <string name="password_editText">Enter password...</string>
@@ -32,8 +32,13 @@
     <string name="verify_code">Enter Verification Code</string>
     <string name="submit_verification_code">Verify</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="have_an_account">Don\'t have an account?</string>
+    <string name="sign_up_here_textbutton">SignUp</string>
     <string name="title_activity_map">CACHE-ING!</string>
+
+    <string name="add_signature">Sign Log</string>
+    <string name="review_log">View Log</string>
+    <string name="done">Done</string>
 
 
 </resources>

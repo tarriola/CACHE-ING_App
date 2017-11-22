@@ -2,9 +2,9 @@ package group2.tcss450.uw.edu.cache_ing_app;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, verifyFragment)
-                        .addToBackStack(null).commit();
+                        .commit();
             }
             Log.d("Register Result", result);
         }
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, loginFragment)
-                        .addToBackStack(null).commit();
+                        .commit();
 
             }
             Log.d("Verification Result", result);

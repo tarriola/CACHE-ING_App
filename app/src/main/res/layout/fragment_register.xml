@@ -3,6 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/mapbackgroundregister"
+    android:backgroundTint="#80FFFFFF"
+    android:backgroundTintMode="src_over"
     tools:context="group2.tcss450.uw.edu.cache_ing_app.RegisterFragment">
 
     <TextView
@@ -24,6 +27,7 @@
         android:inputType="textEmailAddress" />
 
     <TextView
+
         android:id="@+id/first_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,16 +89,17 @@
 
     <Button
         android:id="@+id/register_button_in_registration"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/loginbuttonapp"
+        android:layout_gravity="center_horizontal"
+        android:width="150dp"
         android:text="@string/register_button" />
 
-    <Button
-        android:id="@+id/back_to_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/loginbuttonapp"
-        android:text="@string/login_button1" />
+    <!--<Button-->
+        <!--android:id="@+id/back_to_login"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/loginbuttonapp"-->
+        <!--android:text="@string/login_button1" />-->
 
 </LinearLayout>
