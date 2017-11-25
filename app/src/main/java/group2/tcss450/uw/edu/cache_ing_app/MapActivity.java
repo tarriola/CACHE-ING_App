@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -47,7 +48,8 @@ public class MapActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
-        MapFragment.OnFragmentInteractionListener {
+        MapFragment.OnFragmentInteractionListener,
+        CongratsFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "MapActivity";
 
@@ -199,8 +201,7 @@ public class MapActivity extends AppCompatActivity implements
             return;
         }
         mMapFragment.getMap().setMyLocationEnabled(true);
-        mMapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
-        mMapFragment.updateLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        mMapFragment.updateLocation(location);
 
     }
 
@@ -307,6 +308,16 @@ public class MapActivity extends AppCompatActivity implements
 
     @Override
     public void onMapFragmentInteraction(String message) {
+        CongratsFragment congratsFragment = new CongratsFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, congratsFragment)
+                .commit();
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

@@ -2,6 +2,7 @@ package group2.tcss450.uw.edu.cache_ing_app;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -50,6 +52,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     // vars
     private GoogleMap mGoogleMap;
     private double mLat, mLng;
+    private Location mMyLocation;
+    private Location mTargetLocation;
+    private boolean mIsAvailable;
+    private Marker mCurrentMarker;
 
 
     public MapFragment() {
@@ -65,6 +71,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 //        mLat = 47.2529;
 //        mLng = -122.4443;
+        mIsAvailable = false;
+
+        mTargetLocation = new Location("Tacoma");
+        mTargetLocation.setLatitude(47.2529);
+        mTargetLocation.setLongitude(-122.4443);
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -112,10 +123,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mListener = null;
     }
 
-    public void updateLocation(double lat, double lng) {
-        mLat = lat;
-        mLng = lng;
+    public void updateLocation(Location location) {
+        mLat = location.getLatitude();
+        mLng = location.getLongitude();
+        mMyLocation = location;
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLat, mLng), ZOOM));
+
+        if (mIsAvailable) {
+            Log.d(TAG, "updateLocation: " + mMyLocation.distanceTo(mTargetLocation));
+            if (mMyLocation.distanceTo(mTargetLocation) <= 20) {
+                mIsAvailable = false;
+                mListener.onMapFragmentInteraction("congrats");
+            }
+        }
+
 
 
     }
@@ -129,7 +150,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap = googleMap;
 
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mGoogleMap.getUiSettings().setCompassEnabled(true);
 
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -140,6 +160,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 return true;
             }
         });
+        mGoogleMap.addMarker(new MarkerOptions().title("Tacoma")
+                    .position(new LatLng(mTargetLocation.getLatitude(), mTargetLocation.getLongitude()))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+        mIsAvailable = true;
 
 
     }
@@ -221,13 +245,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 placeLatLng = new LatLng(places.getPlaceLatitude(index), places.getPlaceLongitude(index));
                 placeName = places.getPlaceName(index);
 
-                mGoogleMap.clear();
-                mGoogleMap.addMarker(new MarkerOptions()
+                Marker marker = mGoogleMap.addMarker(new MarkerOptions()
                         .title(placeName)
                         .position(placeLatLng));
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeLatLng, ZOOM));
+                mCurrentMarker = marker;
             }
         };
+
+        if (mCurrentMarker != null) mCurrentMarker.remove();
+
 
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle("Nearby Places")
