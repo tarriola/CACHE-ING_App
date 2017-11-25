@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="group2.tcss450.uw.edu.cache_ing_app.MapFragment">
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        xmlns:android="http://schemas.android.com/apk/res/android"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        app:rippleColor="?attr/colorBackgroundFloating"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:layout_marginBottom="21dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/placesFab"
+        android:layout_alignStart="@+id/placesFab" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/placesFab"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|left"
+        android:background="#ffffff"
+        app:backgroundTint="?attr/colorBackgroundFloating"
+        app:layout_anchor="@+id/map"
+        app:layout_anchorGravity="top|right"
+        app:rippleColor="?attr/actionMenuTextColor"
+        app:srcCompat="@android:drawable/ic_menu_myplaces"
+        android:layout_marginRight="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="23dp" />
+
+</RelativeLayout>

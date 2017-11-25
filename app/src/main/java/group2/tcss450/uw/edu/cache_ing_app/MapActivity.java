@@ -47,25 +47,20 @@ public class MapActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
-        OnMapReadyCallback {
+        MapFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "MapActivity";
 
-    private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-    private static final String API_KEY = "AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4";
-    private static final int NEARBY_RADIUS = 200;
-
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final float ZOOM = 15f;
     /**
      * The desired interval for location updates. Inexact. Updates may be
-     more or less frequent.
+     * more or less frequent.
      */
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     /**
      * The fastest rate for active location updates. Exact. Updates will
-     never be more frequent
+     * never be more frequent
      * than this value.
      */
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
@@ -76,18 +71,19 @@ public class MapActivity extends AppCompatActivity implements
     private LocationRequest mLocationRequest;
     private Location mCurrentLocation;
     private GoogleApiClient mGoogleApiClient;
-    private GoogleMap mGoogleMap;
+    private MapFragment mMapFragment;
 
     /**
      * onCreate function.
+     *
      * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
@@ -109,26 +105,6 @@ public class MapActivity extends AppCompatActivity implements
         mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(mCurrentLocation.getLatitude(),
-                                mCurrentLocation.getLongitude()), ZOOM));
-            }
-        });
-
-        FloatingActionButton placesFab = (FloatingActionButton) findViewById(R.id.placesFab);
-        placesFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: executing task;");
-                AsyncTask<String, Void, String> task = new PlacesWebServiceTask();
-                task.execute(PLACES_URL);
-//                Log.d(TAG, "onClick: task done executing");
-            }
-        });
 
         if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -137,21 +113,21 @@ public class MapActivity extends AppCompatActivity implements
                     MY_PERMISSIONS_LOCATIONS);
         }
 
-        initializeMap();
-    }
+        mMapFragment = new MapFragment();
 
-    /**
-     * Initializes the map.
-     */
-    private void initializeMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment)
-                getSupportFragmentManager()
-                        .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if (savedInstanceState == null) {
+            if (findViewById(R.id.fragmentContainer) != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragmentContainer, mMapFragment)
+                        .commit();
+            }
+        }
+
     }
 
     /**
      * Requests current location from FusedAPI, then calls initializeMap().
+     *
      * @param bundle
      */
     @Override
@@ -182,6 +158,7 @@ public class MapActivity extends AppCompatActivity implements
 
     /**
      * Called if connection is lost.
+     *
      * @param i
      */
     @Override
@@ -195,6 +172,7 @@ public class MapActivity extends AppCompatActivity implements
 
     /**
      * Called if connection failed.
+     *
      * @param connectionResult
      */
     @Override
@@ -208,28 +186,27 @@ public class MapActivity extends AppCompatActivity implements
 
     /**
      * Called when location changes to update location and update camera for map.
+     *
      * @param location
      */
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
         Log.d(TAG, mCurrentLocation.toString());
-//        mGoogleMap.clear();
-
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mGoogleMap.setMyLocationEnabled(true);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM));
-
+        mMapFragment.getMap().setMyLocationEnabled(true);
+        mMapFragment.getMap().getUiSettings().setMyLocationButtonEnabled(false);
+        mMapFragment.updateLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 
     }
 
     /**
      * Checks if Locations permissions are enabled or not.
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -298,8 +275,8 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-    * Disconnects connection and destroys.
-    **/
+     * Disconnects connection and destroys.
+     **/
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -309,8 +286,8 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-    * Connects connection and starts.
-    **/
+     * Connects connection and starts.
+     **/
     protected void onStart() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
@@ -319,8 +296,8 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     /**
-    * Disconnects connection and stops.
-    **/
+     * Disconnects connection and stops.
+     **/
     protected void onStop() {
         if (mGoogleApiClient != null) {
             mGoogleApiClient.disconnect();
@@ -328,97 +305,8 @@ public class MapActivity extends AppCompatActivity implements
         super.onStop();
     }
 
-    /**
-    * Checks if location data is enabled, sets map.
-    * @param: googleMap
-    **/
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
+    public void onMapFragmentInteraction(String message) {
 
-        if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
-        mGoogleMap.setMyLocationEnabled(true);
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mCurrentLocation.getLatitude(),
-//                mCurrentLocation.getLongitude()), ZOOM));
-    }
-
-    /**
-    * Async web service task for GooglePlaces.
-    **/
-    private class PlacesWebServiceTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... strings) {
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            String parameters = strings[0];
-            parameters += "?location=" + mCurrentLocation.getLatitude()
-                    + "," + mCurrentLocation.getLongitude();
-            parameters += "&radius=" + NEARBY_RADIUS;
-            parameters += "&key=" + API_KEY;
-            Log.d(TAG, "doInBackground: " + parameters);
-            try {
-                URL urlObject = new URL(parameters);
-                urlConnection = (HttpURLConnection) urlObject.openConnection();
-                InputStream content = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
-                while ((s = buffer.readLine()) != null) {
-                    response += s;
-                }
-            } catch (Exception e) {
-                response = "Unable to connect, Reason: "
-                        + e.getMessage();
-            } finally {
-                if (urlConnection != null)
-                    urlConnection.disconnect();
-            }
-            return response;
-        }
-        
-        /**
-        * onPostExecute for AsyncTask.
-        **/
-        @Override
-        protected void onPostExecute(String result) {
-            Log.d(TAG, "onPostExecute: begin parsing json");
-            PlacesData placesData = new PlacesData(result);
-
-            showPlacesList(placesData);
-
-        }
-    }
-
-    /**
-     * shows nearby places
-     *
-     * @param places
-     */
-    private void showPlacesList(final PlacesData places) {
-        // Ask the user to choose the place where they are now.
-        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            private LatLng placeLatLng;
-            private String placeName;
-
-            @Override
-            public void onClick(DialogInterface dialog, int index) {
-                placeLatLng = new LatLng(places.getPlaceLatitude(index), places.getPlaceLongitude(index));
-                placeName = places.getPlaceName(index);
-
-                mGoogleMap.clear();
-                mGoogleMap.addMarker(new MarkerOptions()
-                        .title(placeName)
-                        .position(placeLatLng));
-                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(placeLatLng, ZOOM));
-            }
-        };
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Nearby Places")
-                .setItems(places.getNameList(), listener)
-                .show();
     }
 }
