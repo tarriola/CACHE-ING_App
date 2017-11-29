@@ -2,16 +2,13 @@ package group2.tcss450.uw.edu.cache_ing_app.home;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,7 +19,6 @@ import group2.tcss450.uw.edu.cache_ing_app.R;
  * A simple {@link Fragment} subclass.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
-
 
     private OnFragmentInteractionListener mListener;
 
@@ -42,9 +38,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        Button b = (Button) v.findViewById(R.id.sign_in);
+        Button b = v.findViewById(R.id.sign_in);
         b.setOnClickListener(this);
-        TextView fp = (TextView) v.findViewById(R.id.forgot_pass);
+        TextView fp = v.findViewById(R.id.forgot_pass);
         fp.setOnClickListener(this);
         return v;
     }
@@ -60,19 +56,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             Log.d("DO", "onClick: ");
             switch(v.getId()) {
                 case R.id.sign_in:
-                    CheckBox cb = (CheckBox) getView().findViewById(R.id.save_login_cb);
-                    savePreferences("CHECKBOX", cb.isChecked());
                     Log.d("DO SOMETHING", "PLEASE");
-
-                    EditText userNameLogin = (EditText) getView().findViewById(R.id.username_editText);
-                    EditText passwordLogin = (EditText) getView().findViewById(R.id.password_editText);
+                    EditText userNameLogin =  getView().findViewById(R.id.username_editText);
+                    EditText passwordLogin =  getView().findViewById(R.id.password_editText);
 
                     String userName = userNameLogin.getText().toString();
                     String password = passwordLogin.getText().toString();
-                    if (cb.isChecked()) {
-                        savePreferences("USERNAME", userName);
-                        savePreferences("PASSWORD", password);
-                    }
                     if(userName.isEmpty()) {
                         userNameLogin.setError("Enter your username/email");
                     } if (password.isEmpty()) {
@@ -122,34 +111,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
 
         void loginFragmentInteraction(String c, String c2);
-    }
-
-    private void loadPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        boolean boxValue = sharedPreferences.getBoolean("CHECKBOX", false);
-        String userName = sharedPreferences.getString("USERNAME", "");
-        String password = sharedPreferences.getString("PASSWORD", "");
-
-        CheckBox cb = (CheckBox) getView().findViewById(R.id.save_login_cb);
-        EditText userNameLogin = (EditText) getView().findViewById(R.id.username_editText);
-        EditText passwordLogin = (EditText) getView().findViewById(R.id.password_editText);
-        cb.setChecked(boxValue);
-        userNameLogin.setText(userName);
-        passwordLogin.setText(password);
-    }
-
-    private void savePreferences(String key, boolean value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        SharedPreferences.Editor perry = sharedPreferences.edit();
-        perry.putBoolean(key, value);
-        perry.commit();
-    }
-
-    private void savePreferences(String key, String value) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        SharedPreferences.Editor perry = sharedPreferences.edit();
-        perry.putString(key, value);
-        perry.commit();
     }
 }
 
