@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="group2.tcss450.uw.edu.cache_ing_app.CongratsFragment">
+    tools:context="group2.tcss450.uw.edu.cache_ing_app.map.CongratsFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

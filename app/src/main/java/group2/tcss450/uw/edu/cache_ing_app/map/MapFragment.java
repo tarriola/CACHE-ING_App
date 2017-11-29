@@ -1,9 +1,8 @@
-package group2.tcss450.uw.edu.cache_ing_app;
+package group2.tcss450.uw.edu.cache_ing_app.map;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,8 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,6 +27,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import group2.tcss450.uw.edu.cache_ing_app.R;
 
 
 /**

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="group2.tcss450.uw.edu.cache_ing_app.MapFragment">
+    tools:context="group2.tcss450.uw.edu.cache_ing_app.map.MapFragment">
 
     <fragment
         android:id="@+id/map"

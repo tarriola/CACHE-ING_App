@@ -6,7 +6,7 @@
     android:background="@drawable/mapbackgroundregister"
     android:backgroundTint="#80FFFFFF"
     android:backgroundTintMode="src_over"
-    tools:context="group2.tcss450.uw.edu.cache_ing_app.RegisterFragment">
+    tools:context="group2.tcss450.uw.edu.cache_ing_app.home.RegisterFragment">
 
     <TextView
         android:id="@+id/email_text"

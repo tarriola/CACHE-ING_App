@@ -1,4 +1,4 @@
-package group2.tcss450.uw.edu.cache_ing_app;
+package group2.tcss450.uw.edu.cache_ing_app.map;
 
 import android.util.Log;
 

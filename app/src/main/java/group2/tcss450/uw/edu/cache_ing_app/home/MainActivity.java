@@ -1,4 +1,4 @@
-package group2.tcss450.uw.edu.cache_ing_app;
+package group2.tcss450.uw.edu.cache_ing_app.home;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +13,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import group2.tcss450.uw.edu.cache_ing_app.R;
+import group2.tcss450.uw.edu.cache_ing_app.map.MapActivity;
 
 /**
  * Main activity that holds the activity and handles the asynctasks.

@@ -8,7 +8,7 @@
     android:backgroundTint="#80FFFFFF"
     android:backgroundTintMode="src_over"
     android:orientation="vertical"
-    tools:context="group2.tcss450.uw.edu.cache_ing_app.StartupFragment">
+    tools:context="group2.tcss450.uw.edu.cache_ing_app.home.StartupFragment">
 
     <Button
         android:id="@+id/login_button"

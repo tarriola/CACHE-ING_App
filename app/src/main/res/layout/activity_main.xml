@@ -5,7 +5,7 @@
     android:id="@+id/fragmentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="group2.tcss450.uw.edu.cache_ing_app.MainActivity">
+    tools:context="group2.tcss450.uw.edu.cache_ing_app.home.MainActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"

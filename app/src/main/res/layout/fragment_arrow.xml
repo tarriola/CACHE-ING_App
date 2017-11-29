@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="group2.tcss450.uw.edu.cache_ing_app.ArrowFragment">
+    tools:context="group2.tcss450.uw.edu.cache_ing_app.map.ArrowFragment">
 
     <TextView
         android:layout_width="match_parent"
