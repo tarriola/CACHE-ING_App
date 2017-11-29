@@ -23,9 +23,6 @@ import group2.tcss450.uw.edu.cache_ing_app.R;
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
-    private CheckBox cb = (CheckBox) getView().findViewById(R.id.save_login_cb);
-    private EditText userNameLogin = (EditText) getView().findViewById(R.id.username_editText);
-    private EditText passwordLogin = (EditText) getView().findViewById(R.id.password_editText);
 
     private OnFragmentInteractionListener mListener;
 
@@ -49,7 +46,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         b.setOnClickListener(this);
         TextView fp = (TextView) v.findViewById(R.id.forgot_pass);
         fp.setOnClickListener(this);
-        loadPreferences();
         return v;
     }
 
@@ -64,8 +60,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             Log.d("DO", "onClick: ");
             switch(v.getId()) {
                 case R.id.sign_in:
+                    CheckBox cb = (CheckBox) getView().findViewById(R.id.save_login_cb);
                     savePreferences("CHECKBOX", cb.isChecked());
                     Log.d("DO SOMETHING", "PLEASE");
+
+                    EditText userNameLogin = (EditText) getView().findViewById(R.id.username_editText);
+                    EditText passwordLogin = (EditText) getView().findViewById(R.id.password_editText);
 
                     String userName = userNameLogin.getText().toString();
                     String password = passwordLogin.getText().toString();
@@ -130,6 +130,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         String userName = sharedPreferences.getString("USERNAME", "");
         String password = sharedPreferences.getString("PASSWORD", "");
 
+        CheckBox cb = (CheckBox) getView().findViewById(R.id.save_login_cb);
+        EditText userNameLogin = (EditText) getView().findViewById(R.id.username_editText);
+        EditText passwordLogin = (EditText) getView().findViewById(R.id.password_editText);
         cb.setChecked(boxValue);
         userNameLogin.setText(userName);
         passwordLogin.setText(password);
