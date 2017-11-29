@@ -49,7 +49,8 @@ public class MapActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
         MapFragment.OnFragmentInteractionListener,
-        CongratsFragment.OnFragmentInteractionListener {
+        CongratsFragment.OnFragmentInteractionListener,
+        ArrowFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "MapActivity";
 
@@ -74,6 +75,7 @@ public class MapActivity extends AppCompatActivity implements
     private Location mCurrentLocation;
     private GoogleApiClient mGoogleApiClient;
     private MapFragment mMapFragment;
+    private ArrowFragment mArrowFragment;
 
     /**
      * onCreate function.
@@ -202,6 +204,8 @@ public class MapActivity extends AppCompatActivity implements
         }
         mMapFragment.getMap().setMyLocationEnabled(true);
         mMapFragment.updateLocation(location);
+        if (mArrowFragment != null)
+            mArrowFragment.updateLocation(location);
 
     }
 
@@ -307,17 +311,44 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onMapFragmentInteraction(String message) {
-        CongratsFragment congratsFragment = new CongratsFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, congratsFragment)
-                .commit();
+    public void onMapFragmentInteraction(String msg, double lat, double lng) {
+        switch (msg) {
+            case "congrats":
+                CongratsFragment congratsFragment = new CongratsFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, congratsFragment)
+                        .commit();
+                break;
+
+            case "arrow":
+                mArrowFragment = new ArrowFragment();
+                Bundle args = new Bundle();
+                args.putDouble("mlat", mCurrentLocation.getLatitude());
+                args.putDouble("mlng", mCurrentLocation.getLongitude());
+                args.putDouble("lat", lat);
+                args.putDouble("lng", lng);
+                mArrowFragment.setArguments(args);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, mArrowFragment)
+                        .commit();
+                break;
+
+        }
+
 
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void arrowFragmentInteraction(String message) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentContainer, mMapFragment)
+                .commit();
     }
 }

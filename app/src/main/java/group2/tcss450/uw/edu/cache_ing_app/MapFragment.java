@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,7 +47,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
     private static final String API_KEY = "AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4";
     private static final int NEARBY_RADIUS = 200;
-    private static final float ZOOM = 15f;
+    private static final float ZOOM = 18f;
 
 
     // vars
@@ -76,6 +77,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mTargetLocation = new Location("Tacoma");
         mTargetLocation.setLatitude(47.2529);
         mTargetLocation.setLongitude(-122.4443);
+
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +135,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.d(TAG, "updateLocation: " + mMyLocation.distanceTo(mTargetLocation));
             if (mMyLocation.distanceTo(mTargetLocation) <= 20) {
                 mIsAvailable = false;
-                mListener.onMapFragmentInteraction("congrats");
+                mListener.onMapFragmentInteraction("congrats", 0.0, 0.0);
             }
         }
 
@@ -154,18 +156,49 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mGoogleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                Log.d(TAG, "onMarkerClick: " + marker.getTitle());
+                if (marker.getTitle().equals("Tacoma")) {
+                    optionBox();
+                }
+//                Toast.makeText(getContext(), marker.getId(), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(getContext(), marker.getId(), Toast.LENGTH_SHORT).show();
 
                 return true;
             }
         });
+//        mTargetMarker = mGoogleMap.addMarker(new MarkerOptions()
+//                .title("Tacom")
+//                .position(placeLatLng));
+//
         mGoogleMap.addMarker(new MarkerOptions().title("Tacoma")
                     .position(new LatLng(mTargetLocation.getLatitude(), mTargetLocation.getLongitude()))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-        mIsAvailable = true;
 
+    }
 
+    private void optionBox() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Confirm");
+        builder.setMessage("Do you wish to set this location");
+
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                mListener.onMapFragmentInteraction("arrow", mTargetLocation.getLatitude(), mTargetLocation.getLongitude());
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mIsAvailable = false;
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     /**
@@ -180,7 +213,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      */
     public interface OnFragmentInteractionListener {
 
-        void onMapFragmentInteraction(String message);
+        void onMapFragmentInteraction(String message, double lat, double lng);
     }
 
     /**
