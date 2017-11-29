@@ -44,6 +44,12 @@
         android:hint="@string/password_editText"
         android:inputType="textPassword" />
 
+    <CheckBox
+        android:id="@+id/save_login_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_login_info" />
+
     <Button
         android:id="@+id/sign_in"
         android:layout_width="match_parent"
