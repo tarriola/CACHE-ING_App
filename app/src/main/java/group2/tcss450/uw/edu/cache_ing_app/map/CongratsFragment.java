@@ -20,6 +20,7 @@ import group2.tcss450.uw.edu.cache_ing_app.R;
 public class CongratsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private int mLocationID, mAccountID;
 
     public CongratsFragment() {
         // Required empty public constructor
@@ -71,4 +72,6 @@ public class CongratsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+
+import java.net.HttpURLConnection;
 
 import group2.tcss450.uw.edu.cache_ing_app.R;
 
@@ -55,6 +58,8 @@ public class MapActivity extends AppCompatActivity implements
     private GoogleApiClient mGoogleApiClient;
     private MapFragment mMapFragment;
     private ArrowFragment mArrowFragment;
+    private String mEmail;
+    private int mAccountID;
 
     /**
      * onCreate function.
@@ -77,6 +82,11 @@ public class MapActivity extends AppCompatActivity implements
                     .build();
         }
 
+        mEmail = getIntent().getStringExtra("email");
+        mAccountID = getIntent().getIntExtra("id", 0);
+//        Log.d(TAG, "onCreate: email = " + mEmail);
+//        Log.d(TAG, "onCreate: accountID = " + mAccountID);
+
         mLocationRequest = new LocationRequest();
         // Sets the desired interval for active location updates. This interval is
         // inexact. You may not receive updates at all if no location sources are available, or
@@ -98,13 +108,20 @@ public class MapActivity extends AppCompatActivity implements
 
         mMapFragment = new MapFragment();
 
-        if (savedInstanceState == null) {
-            if (findViewById(R.id.fragmentContainer) != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fragmentContainer, mMapFragment)
-                        .commit();
-            }
-        }
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragmentContainer, mMapFragment)
+                    .commit();
+
+
+
+
+//        initMap();
+
+    }
+
+    private void initMap() {
+
 
     }
 
@@ -133,7 +150,7 @@ public class MapActivity extends AppCompatActivity implements
                 mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 //                initializeMap();
                 if (mCurrentLocation != null)
-                    Log.i(TAG, mCurrentLocation.toString());
+                    Log.i(TAG, "onConnected " + mCurrentLocation.toString());
                 startLocationUpdates();
             }
         }
@@ -175,14 +192,17 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
-        Log.d(TAG, mCurrentLocation.toString());
+        Log.d(TAG, " onLocationChanged: " + mCurrentLocation.toString());
 
         if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mMapFragment.getMap().setMyLocationEnabled(true);
-        mMapFragment.updateLocation(location);
+        if (mMapFragment != null && mMapFragment.getMap() != null) {
+            mMapFragment.getMap().setMyLocationEnabled(true);
+            mMapFragment.updateLocation(location);
+        }
+
         if (mArrowFragment != null)
             mArrowFragment.updateLocation(location);
 
@@ -234,12 +254,15 @@ public class MapActivity extends AppCompatActivity implements
      * Requests location updates from the FusedLocationApi.
      */
     protected void startLocationUpdates() {
+        Log.d(TAG, "startLocationUpdates: initiating");
         // The final argument to {@code requestLocationUpdates()} is aLocationListener
         //(http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
         if (ActivityCompat.checkSelfPermission(this, FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+//            Log.d(TAG, "startLocationUpdates: " + mCurrentLocation.getLatitude() + ", " + mCurrentLocation.getLongitude());
+//            initMap();
         }
     }
 
@@ -326,8 +349,26 @@ public class MapActivity extends AppCompatActivity implements
 
     @Override
     public void arrowFragmentInteraction(String message) {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContainer, mMapFragment)
-                .commit();
+        switch (message) {
+            case "map":
+                if (mMapFragment == null) {
+                    mMapFragment = new MapFragment();
+                }
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragmentContainer, mMapFragment)
+                        .commit();
+                break;
+
+            case "congrats":
+                CongratsFragment congratsFragment = new CongratsFragment();
+                Bundle args = new Bundle();
+                args.putString("email", mEmail);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, congratsFragment)
+                        .commit();
+                break;
+        }
+
     }
 }

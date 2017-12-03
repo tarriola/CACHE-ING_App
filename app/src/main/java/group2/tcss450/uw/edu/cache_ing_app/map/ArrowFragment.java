@@ -67,6 +67,9 @@ public class ArrowFragment extends Fragment implements View.OnClickListener {
         mArrow.setRotation(mCurrentLocation.bearingTo(mTargetLocation));
         mDistance = (int) mCurrentLocation.distanceTo(mTargetLocation);
         mDistanceTxt.setText(mDistance + "m");
+        if (mDistance <= 10) {
+            mListener.arrowFragmentInteraction("congrats");
+        }
     }
 
 

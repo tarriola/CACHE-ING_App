@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements
             "~tarriola/cachewebservice/";
 
     private static final String TAG = "MainActivity";
+
 
     /**
      * Creating the first view and displaying it.
@@ -92,12 +96,14 @@ public class MainActivity extends AppCompatActivity implements
      */
     private class LoginWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "login.php";
+        private String email;
         @Override
         protected String doInBackground(String... strings) {
             String response = "";
             HttpURLConnection urlConnection = null;
             String url = strings[0];
             String args = "?my_email=" + strings[1] + "&my_pwd=" + strings[2];
+            email = strings[1];
             try {
                 URL urlObject = new URL(url + SERVICE + args);
                 urlConnection = (HttpURLConnection) urlObject.openConnection();
@@ -125,21 +131,31 @@ public class MainActivity extends AppCompatActivity implements
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Unable to connect to the server", Toast.LENGTH_LONG)
                         .show();
                 return;
             } else if (result.startsWith("{\"code\":200")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Account not verified.", Toast.LENGTH_LONG)
                         .show();
             } else if (result.startsWith("{\"code\":300")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Email and password doesn't match", Toast.LENGTH_LONG)
+                        .show();
+            } else if (result.startsWith("{\"code\":400")) {
+                Toast.makeText(getApplicationContext(), "Error connecting to database", Toast.LENGTH_LONG)
                         .show();
             } else {
-                //String[] string = result.split("\"");
-                Intent i = new Intent(MainActivity.this, MapActivity.class);
-//                i.putExtra(MapActivity.LATITUDE, 47.2529);
-//                i.putExtra(MapActivity.LONGITUDE, -122.4443);
-                startActivity(i);
+                try {
+                    JSONObject json = new JSONObject(result);
+                    int id = json.getInt("id");
+//                    Log.d(TAG, "onPostExecute: id = " + id);
+                    Intent i = new Intent(MainActivity.this, MapActivity.class);
+                    i.putExtra("email", email);
+                    i.putExtra("id", id);
+                    startActivity(i);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             Log.d("Login Result", result);
             //mTextView.setText(result);
@@ -203,14 +219,14 @@ public class MainActivity extends AppCompatActivity implements
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Unable to connect to the server", Toast.LENGTH_LONG)
                         .show();
                 return;
             } else if (result.startsWith("{\"code\":200")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_LONG)
                         .show();
             } else if (result.startsWith("{\"code\":300")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Error connecting to the databse", Toast.LENGTH_LONG)
                         .show();
             }else {
                 //String[] string = result.split("\"");
@@ -278,14 +294,14 @@ public class MainActivity extends AppCompatActivity implements
         protected void onPostExecute(String result) {
             // Something wrong with the network or the URL.
             if (result.startsWith("Unable to")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Unable to connect to the server", Toast.LENGTH_LONG)
                         .show();
                 return;
             } else if (result.startsWith("{\"code\":200")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Verification code doesn't match", Toast.LENGTH_LONG)
                         .show();
             } else if (result.startsWith("{\"code\":300")) {
-                Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), "Error connecting to the database", Toast.LENGTH_LONG)
                         .show();
             } else {
                 //String[] string = result.split("\"");

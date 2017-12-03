@@ -1,11 +1,14 @@
 package group2.tcss450.uw.edu.cache_ing_app.map;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -22,11 +25,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import group2.tcss450.uw.edu.cache_ing_app.R;
 
@@ -43,6 +51,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "MapFragment";
 
+    private static final String PARTIAL_URL = "http://cssgate.insttech.washington.edu/" +
+            "~tarriola/cachewebservice/";
     private static final String PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
     private static final String API_KEY = "AIzaSyA2FO0ykhMK2VaSlx2JVVpAcWfjVRFWyu4";
     private static final int NEARBY_RADIUS = 200;
@@ -56,6 +66,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Location mTargetLocation;
     private boolean mIsAvailable;
     private Marker mCurrentMarker;
+    private ArrayList<LocationData> mDataLocations;
 
 
     public MapFragment() {
@@ -76,6 +87,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mTargetLocation = new Location("Tacoma");
         mTargetLocation.setLatitude(47.2529);
         mTargetLocation.setLongitude(-122.4443);
+
+        mDataLocations = new ArrayList<>();
 
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
@@ -128,16 +141,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mLat = location.getLatitude();
         mLng = location.getLongitude();
         mMyLocation = location;
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLat, mLng), ZOOM));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLat, mLng), ZOOM));
 
         if (mIsAvailable) {
             Log.d(TAG, "updateLocation: " + mMyLocation.distanceTo(mTargetLocation));
-            if (mMyLocation.distanceTo(mTargetLocation) <= 20) {
+            if (mMyLocation.distanceTo(mTargetLocation) <= 10) {
                 mIsAvailable = false;
                 mListener.onMapFragmentInteraction("congrats", 0.0, 0.0);
             }
         }
-
 
 
     }
@@ -146,8 +158,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return mGoogleMap;
     }
 
+    public void setLocation(Location location) {
+        mMyLocation = location;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady: initializing map");
         mGoogleMap = googleMap;
 
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -156,9 +173,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 Log.d(TAG, "onMarkerClick: " + marker.getTitle());
-                if (marker.getTitle().equals("Tacoma")) {
-                    optionBox();
+                marker.showInfoWindow();
+                for (LocationData location : mDataLocations) {
+                    if (marker.getTitle().equals(location.name)) {
+                        mTargetLocation.setLatitude(location.lat);
+                        mTargetLocation.setLongitude(location.lng);
+                        optionBox(location.id);
+                    }
                 }
+
 //                Toast.makeText(getContext(), marker.getId(), Toast.LENGTH_SHORT).show();
 
 
@@ -168,14 +191,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //        mTargetMarker = mGoogleMap.addMarker(new MarkerOptions()
 //                .title("Tacom")
 //                .position(placeLatLng));
-//
+//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mMyLocation.getLatitude(), mMyLocation.getLongitude()), ZOOM));
+
         mGoogleMap.addMarker(new MarkerOptions().title("Tacoma")
                     .position(new LatLng(mTargetLocation.getLatitude(), mTargetLocation.getLongitude()))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
+        LocationsWebServiceTask task = new LocationsWebServiceTask();
+        task.execute(PARTIAL_URL);
+
     }
 
-    private void optionBox() {
+    private void optionBox(int id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Confirm");
         builder.setMessage("Do you wish to set this location");
@@ -294,5 +321,87 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 .show();
     }
 
+    /**
+     * Async web service task for GooglePlaces.
+     **/
+    private class LocationsWebServiceTask extends AsyncTask<String, Void, String> {
+        private final String SERVICE = "locations.php";
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            String parameters = strings[0];
+
+            try {
+                URL urlObject = new URL(parameters + SERVICE);
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s = "";
+                while ((s = buffer.readLine()) != null) {
+                    response += s;
+                }
+            } catch (Exception e) {
+                response = "Unable to connect, Reason: "
+                        + e.getMessage();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return response;
+        }
+
+        /**
+         * onPostExecute for AsyncTask.
+         **/
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d(TAG, "onPostExecute: begin parsing json");
+            getLocations(result);
+        }
+    }
+
+    private void getLocations(String data) {
+        try {
+            JSONObject json = new JSONObject(data);
+            JSONArray jsonArray = json.getJSONArray("locations");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject object = jsonArray.getJSONObject(i);
+                LocationData location = new LocationData();
+                location.id = object.getInt("locationID");
+                location.name = object.getString("name");
+                location.lat = object.getDouble("latitude");
+                location.lng = object.getDouble("longitude");
+                mDataLocations.add(location);
+
+            }
+
+            loadLocations();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadLocations() {
+        for (LocationData location : mDataLocations) {
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .title(location.name)
+                    .position(new LatLng(location.lat, location.lng)));
+
+            Log.d(TAG, "loadLocations: marker: " + location.lat + ", " + location.lng);
+        }
+    }
+
+    private class LocationData {
+        int id;
+        String name;
+        double lat;
+        double lng;
+        public LocationData() {
+
+        }
+    }
 
 }
