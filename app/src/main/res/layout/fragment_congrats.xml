@@ -21,14 +21,16 @@
 
     </FrameLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:name="group2.tcss450.uw.edu.cache_ing_app.LogFragment"
-        tools:context="group2.tcss450.uw.edu.cache_ing_app.map.LogFragment"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="19dp"
-        android:id="@+id/my_recycler_view"
-        app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/log_item"/>
+        android:layout_height="match_parent">
+        <fragment
+            android:id="@+id/tab1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </fragment>
+
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

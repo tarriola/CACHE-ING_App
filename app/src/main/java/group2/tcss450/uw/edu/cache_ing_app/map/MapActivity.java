@@ -59,7 +59,7 @@ public class MapActivity extends AppCompatActivity implements
     private MapFragment mMapFragment;
     private ArrowFragment mArrowFragment;
     private String mEmail;
-    private int mAccountID;
+    private int mAccountID, mLocationID;
 
     /**
      * onCreate function.
@@ -313,10 +313,15 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onMapFragmentInteraction(String msg, double lat, double lng) {
+    public void onMapFragmentInteraction(String msg, int locationID, double lat, double lng) {
+        mLocationID = locationID;
+        Bundle args = new Bundle();
         switch (msg) {
             case "congrats":
                 CongratsFragment congratsFragment = new CongratsFragment();
+                args.putInt("locationID", mLocationID);
+                args.putInt("accountID", mAccountID);
+                congratsFragment.setArguments(args);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragmentContainer, congratsFragment)
@@ -325,7 +330,6 @@ public class MapActivity extends AppCompatActivity implements
 
             case "arrow":
                 mArrowFragment = new ArrowFragment();
-                Bundle args = new Bundle();
                 args.putDouble("mlat", mCurrentLocation.getLatitude());
                 args.putDouble("mlng", mCurrentLocation.getLongitude());
                 args.putDouble("lat", lat);
@@ -363,6 +367,8 @@ public class MapActivity extends AppCompatActivity implements
                 CongratsFragment congratsFragment = new CongratsFragment();
                 Bundle args = new Bundle();
                 args.putString("email", mEmail);
+                args.putInt("accountID", mAccountID);
+                args.putInt("locationID", mLocationID);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragmentContainer, congratsFragment)

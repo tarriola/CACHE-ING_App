@@ -67,6 +67,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private boolean mIsAvailable;
     private Marker mCurrentMarker;
     private ArrayList<LocationData> mDataLocations;
+    private int mLocationID;
 
 
     public MapFragment() {
@@ -89,6 +90,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mTargetLocation.setLongitude(-122.4443);
 
         mDataLocations = new ArrayList<>();
+        mLocationID = 1;
 
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
@@ -147,7 +149,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.d(TAG, "updateLocation: " + mMyLocation.distanceTo(mTargetLocation));
             if (mMyLocation.distanceTo(mTargetLocation) <= 10) {
                 mIsAvailable = false;
-                mListener.onMapFragmentInteraction("congrats", 0.0, 0.0);
+                mListener.onMapFragmentInteraction("congrats", mLocationID, 0.0, 0.0);
             }
         }
 
@@ -178,7 +180,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     if (marker.getTitle().equals(location.name)) {
                         mTargetLocation.setLatitude(location.lat);
                         mTargetLocation.setLongitude(location.lng);
-                        optionBox(location.id);
+                        mLocationID = location.id;
+                        optionBox();
                     }
                 }
 
@@ -202,7 +205,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void optionBox(int id) {
+    private void optionBox() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Confirm");
         builder.setMessage("Do you wish to set this location");
@@ -211,7 +214,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                mListener.onMapFragmentInteraction("arrow", mTargetLocation.getLatitude(), mTargetLocation.getLongitude());
+                mListener.onMapFragmentInteraction("arrow", mLocationID, mTargetLocation.getLatitude(), mTargetLocation.getLongitude());
             }
         });
 
@@ -239,7 +242,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      */
     public interface OnFragmentInteractionListener {
 
-        void onMapFragmentInteraction(String message, double lat, double lng);
+        void onMapFragmentInteraction(String message, int locationID, double lat, double lng);
     }
 
     /**
