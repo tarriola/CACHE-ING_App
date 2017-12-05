@@ -22,7 +22,6 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
     private final ArrayList<JSONObject> mValues;
 
-    private LinearLayout mLayout;
 
     public LogAdapter (ArrayList<JSONObject> list) {
         mValues = list;
@@ -40,10 +39,11 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
         JSONObject temp = mValues.get(position);
 
         try {
-            holder.firstName.setText((String)temp.get("first"));
-            holder.lastName.setText((String)temp.get("last"));
-            if (temp.has("nick")) {
-                holder.nickName.setText((String) temp.get("nick"));
+
+            holder.firstName.setText((String)temp.get("firstname"));
+            holder.lastName.setText((String)temp.get("lastname"));
+            if (temp.has("nickname")) {
+                holder.nickName.setText((String) temp.get("nickname"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -53,6 +53,11 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
