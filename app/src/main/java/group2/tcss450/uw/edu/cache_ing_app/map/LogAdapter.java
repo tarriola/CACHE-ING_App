@@ -39,10 +39,13 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         JSONObject temp = mValues.get(position);
         try {
-            holder.firstName.setText((String)temp.get("firstname"));
-            holder.lastName.setText((String)temp.get("lastname"));
+            holder.firstName.setText(temp.getString("firstname"));
+            holder.lastName.setText(temp.getString("lastname"));
             if (temp.has("nickname")) {
-                holder.nickName.setText((String) temp.get("nickname"));
+                holder.nickName.setText(temp.getString("nickname"));
+            }
+            if (temp.has("message")) {
+                holder.message.setText(temp.getString("message"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -63,12 +66,14 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
         public final TextView firstName;
         public final TextView lastName;
         public final TextView nickName;
+        public final TextView message;
 
         public ViewHolder(View itemView) {
             super(itemView);
             firstName = itemView.findViewById(R.id.log_first_name);
             lastName = itemView.findViewById(R.id.log_last_name);
             nickName = itemView.findViewById(R.id.log_nick_name);
+            message = itemView.findViewById(R.id.log_message);
 
         }
     }

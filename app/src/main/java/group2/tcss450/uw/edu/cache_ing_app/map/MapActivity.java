@@ -347,7 +347,15 @@ public class MapActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onCongratsFragmentInteraction(String message) {
+        if (mMapFragment == null) {
+            mMapFragment = new MapFragment();
+            mMapFragment.setLocation(mCurrentLocation);
+        }
+        mArrowFragment = null;
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentContainer, mMapFragment)
+                .commit();
 
     }
 
@@ -357,6 +365,7 @@ public class MapActivity extends AppCompatActivity implements
             case "map":
                 if (mMapFragment == null) {
                     mMapFragment = new MapFragment();
+                    mMapFragment.setLocation(mCurrentLocation);
                 }
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragmentContainer, mMapFragment)
@@ -366,9 +375,11 @@ public class MapActivity extends AppCompatActivity implements
             case "congrats":
                 CongratsFragment congratsFragment = new CongratsFragment();
                 Bundle args = new Bundle();
+                Log.d(TAG, "arrowFragmentInteraction: " + mAccountID + ", " + mLocationID);
                 args.putString("email", mEmail);
                 args.putInt("accountID", mAccountID);
                 args.putInt("locationID", mLocationID);
+                congratsFragment.setArguments(args);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragmentContainer, congratsFragment)

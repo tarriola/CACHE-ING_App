@@ -98,16 +98,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(mLat,
-                                mLng), ZOOM));
+                        new LatLng(mMyLocation.getLatitude(),
+                                mMyLocation.getLongitude()), ZOOM));
             }
         });
 
-        FloatingActionButton placesFab = view.findViewById(R.id.placesFab);
+        final FloatingActionButton placesFab = view.findViewById(R.id.placesFab);
         placesFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: executing task;");
+//                placesFab.setEnabled(false);
                 AsyncTask<String, Void, String> task = new PlacesWebServiceTask();
                 task.execute(PLACES_URL);
 //                Log.d(TAG, "onClick: task done executing");
@@ -181,6 +182,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         mTargetLocation.setLatitude(location.lat);
                         mTargetLocation.setLongitude(location.lng);
                         mLocationID = location.id;
+                        Log.d(TAG, "onMarkerClick: locationID " + mLocationID);
                         optionBox();
                     }
                 }
@@ -195,10 +197,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 //                .title("Tacom")
 //                .position(placeLatLng));
 //        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mMyLocation.getLatitude(), mMyLocation.getLongitude()), ZOOM));
-
-        mGoogleMap.addMarker(new MarkerOptions().title("Tacoma")
-                    .position(new LatLng(mTargetLocation.getLatitude(), mTargetLocation.getLongitude()))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+//
+//        mGoogleMap.addMarker(new MarkerOptions().title("Tacoma")
+//                    .position(new LatLng(mTargetLocation.getLatitude(), mTargetLocation.getLongitude()))
+//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
         LocationsWebServiceTask task = new LocationsWebServiceTask();
         task.execute(PARTIAL_URL);
@@ -283,9 +285,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
          **/
         @Override
         protected void onPostExecute(String result) {
-            Log.d(TAG, "onPostExecute: begin parsing json");
+            Log.d(TAG, "onPostExecute: begin parsing json: " + result);
             PlacesData placesData = new PlacesData(result);
-
+//            getView().findViewById(R.id.placesFab).setEnabled(true);
             showPlacesList(placesData);
 
         }
@@ -391,7 +393,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         for (LocationData location : mDataLocations) {
             mGoogleMap.addMarker(new MarkerOptions()
                     .title(location.name)
-                    .position(new LatLng(location.lat, location.lng)));
+                    .position(new LatLng(location.lat, location.lng))
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
             Log.d(TAG, "loadLocations: marker: " + location.lat + ", " + location.lng);
         }
