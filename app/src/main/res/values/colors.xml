@@ -3,5 +3,7 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="UW_PURPLE">#4b2e83</color>
+    <color name="UW_GOLD">#b7a57a</color>
+    <color name="METALLIC_GOLD">#85754d</color>
 </resources>
