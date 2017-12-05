@@ -31,15 +31,14 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.log_item, parent, false);
-        return new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v);
+        return vh;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         JSONObject temp = mValues.get(position);
-
         try {
-
             holder.firstName.setText((String)temp.get("firstname"));
             holder.lastName.setText((String)temp.get("lastname"));
             if (temp.has("nickname")) {
