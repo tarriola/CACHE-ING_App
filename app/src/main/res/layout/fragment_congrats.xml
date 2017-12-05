@@ -1,9 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
     tools:context="group2.tcss450.uw.edu.cache_ing_app.map.CongratsFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -22,27 +23,86 @@
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         tools:context="group2.tcss450.uw.edu.cache_ing_app.map.LogFragment"
-        tools:listitem="@layout/log_item" />
+        tools:listitem="@layout/log_item"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linear" />
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
-        android:layout_height="51dp"
-        android:layout_marginTop="220dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cacheing_image"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimaryDark">
 
         <Button
             android:id="@+id/done_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/done"/>
+            android:text="@string/done"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/UW_PURPLE"/>
 
         <Button
             android:id="@+id/add_sig"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/add_signature" />
+            android:text="@string/add_signature"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/UW_PURPLE"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
+
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--tools:context="group2.tcss450.uw.edu.cache_ing_app.map.CongratsFragment">-->
+
+    <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/cacheing_image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="228dp"-->
+        <!--android:background="@color/colorPrimaryDark"-->
+        <!--app:srcCompat="@drawable/cacheing" />-->
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/my_recycler_view"-->
+        <!--android:name="group2.tcss450.uw.edu.cache_ing_app.LogFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--app:layoutManager="LinearLayoutManager"-->
+        <!--tools:context="group2.tcss450.uw.edu.cache_ing_app.map.LogFragment"-->
+        <!--tools:listitem="@layout/log_item" />-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="51dp"-->
+        <!--android:layout_marginTop="220dp"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<Button-->
+            <!--android:id="@+id/done_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="@string/done"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/add_sig"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="@string/add_signature" />-->
+    <!--</LinearLayout>-->
+
+<!--</LinearLayout>-->
+

@@ -2,7 +2,6 @@ package group2.tcss450.uw.edu.cache_ing_app.map;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -45,7 +44,7 @@ public class CongratsFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
     private int mLocationID, mAccountID;
-    private String mMessage;
+    private String mComment;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -64,7 +63,7 @@ public class CongratsFragment extends Fragment implements View.OnClickListener {
         mAccountID = getArguments().getInt("accountID");
         Log.d(TAG, "onCreateView: locationID = " + mLocationID);
         Log.d(TAG, "onCreateView: accountID = " + mAccountID);
-        mMessage = " ";
+        mComment = " ";
 
         LogsWebServiceTask task = new LogsWebServiceTask();
         task.execute(PARTIAL_URL);
@@ -209,7 +208,7 @@ public class CongratsFragment extends Fragment implements View.OnClickListener {
             String response = "";
             HttpURLConnection urlConnection = null;
             String parameters = strings[0];
-            String token = "?my_locID=" + mLocationID + "&my_accID=" + mAccountID + "&my_msg=" + mMessage;
+            String token = "?my_locID=" + mLocationID + "&my_accID=" + mAccountID + "&my_msg=" + mComment;
             Log.d(TAG, "doInBackground: " + parameters + SERVICE + token);
             try {
                 URL urlObject = new URL(parameters + SERVICE + token);
@@ -270,8 +269,8 @@ public class CongratsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                mMessage = input.getText().toString();
-                Log.d(TAG, "showInputDialog: message = " + mMessage);
+                mComment = input.getText().toString();
+                Log.d(TAG, "showInputDialog: message = " + mComment);
                 SignWebServiceTask task = new SignWebServiceTask();
                 task.execute(PARTIAL_URL);
 

@@ -35,18 +35,31 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
         return vh;
     }
 
+//    @Override
+//    public void onBindViewHolder(ViewHolder holder, int position) {
+//        JSONObject temp = mValues.get(position);
+//        try {
+//            String name = temp.getString("firstname") + " " + temp.getString("firstname");
+//            holder.firstName.setText(temp.getString("firstname"));
+//            holder.lastName.setText(temp.getString("lastname"));
+//            if (temp.has("nickname")) {
+//                holder.nickName.setText(temp.getString("nickname"));
+//            }
+//            if (temp.has("message")) {
+//                holder.message.setText(temp.getString("message"));
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         JSONObject temp = mValues.get(position);
         try {
-            holder.firstName.setText(temp.getString("firstname"));
-            holder.lastName.setText(temp.getString("lastname"));
-            if (temp.has("nickname")) {
-                holder.nickName.setText(temp.getString("nickname"));
-            }
-            if (temp.has("message")) {
-                holder.message.setText(temp.getString("message"));
-            }
+            String fullname = temp.getString("firstname") + " " + temp.getString("lastname");
+            holder.name.setText(fullname);
+            holder.nickname.setText(temp.getString("nickname"));
+            holder.comment.setText(temp.getString("message"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -62,18 +75,32 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+//    public class ViewHolder extends RecyclerView.ViewHolder {
+//        public final TextView firstName;
+//        public final TextView lastName;
+//        public final TextView nickName;
+//        public final TextView message;
+//
+//        public ViewHolder(View itemView) {
+//            super(itemView);
+//            firstName = itemView.findViewById(R.id.log_first_name);
+//            lastName = itemView.findViewById(R.id.log_last_name);
+//            nickName = itemView.findViewById(R.id.log_nick_name);
+//            message = itemView.findViewById(R.id.log_message);
+//
+//        }
+//    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView firstName;
-        public final TextView lastName;
-        public final TextView nickName;
-        public final TextView message;
+        public final TextView name;
+        public final TextView nickname;
+        public final TextView comment;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            firstName = itemView.findViewById(R.id.log_first_name);
-            lastName = itemView.findViewById(R.id.log_last_name);
-            nickName = itemView.findViewById(R.id.log_nick_name);
-            message = itemView.findViewById(R.id.log_message);
+            name = itemView.findViewById(R.id.log_name);
+            nickname = itemView.findViewById(R.id.log_nickname);
+            comment = itemView.findViewById(R.id.log_comment);
 
         }
     }
