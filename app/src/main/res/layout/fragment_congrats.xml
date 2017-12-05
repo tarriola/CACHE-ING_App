@@ -15,19 +15,14 @@
         android:background="@color/colorPrimaryDark"
         app:srcCompat="@drawable/cacheing" />
 
-    <FrameLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:name="group2.tcss450.uw.edu.cache_ing_app.LogFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
-            android:name="group2.tcss450.uw.edu.cache_ing_app.LogFragment"
-            android:layout_width="match_parent"
-            android:layout_height="19dp"
-            app:layoutManager="LinearLayoutManager"
-            tools:context="group2.tcss450.uw.edu.cache_ing_app.map.LogFragment"
-            tools:listitem="@layout/log_item" />
-    </FrameLayout>
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="group2.tcss450.uw.edu.cache_ing_app.map.LogFragment"
+        tools:listitem="@layout/log_item" />
 
     <LinearLayout
         android:layout_width="match_parent"
