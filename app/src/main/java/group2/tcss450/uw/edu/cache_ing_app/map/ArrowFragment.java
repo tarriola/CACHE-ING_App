@@ -1,9 +1,14 @@
 package group2.tcss450.uw.edu.cache_ing_app.map;
 
 import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +25,20 @@ import group2.tcss450.uw.edu.cache_ing_app.R;
  * {@link ArrowFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class ArrowFragment extends Fragment implements View.OnClickListener {
+public class ArrowFragment extends Fragment implements
+        View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
+
+    private static final String TAG = "ArrowFragment";
 
     private ImageView mArrow;
     private TextView mDistanceTxt;
     private Button mToButton;
     private Location mCurrentLocation;
     private Location mTargetLocation;
-    private int mDistance;
+    private int mDistance, mDegrees;
+
 
     public ArrowFragment() {
         // Required empty public constructor
@@ -42,9 +51,9 @@ public class ArrowFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_arrow, container, false);
 
-        mArrow = (ImageView) view.findViewById(R.id.arrowImg);
-        mDistanceTxt = (TextView) view.findViewById(R.id.distanceTxt);
-        mToButton = (Button) view.findViewById(R.id.toMap);
+        mArrow = view.findViewById(R.id.arrowImg);
+        mDistanceTxt = view.findViewById(R.id.distanceTxt);
+        mToButton = view.findViewById(R.id.toMap);
 
         mCurrentLocation = new Location("My Location");
         mCurrentLocation.setLatitude(getArguments().getDouble("mlat"));
@@ -64,7 +73,9 @@ public class ArrowFragment extends Fragment implements View.OnClickListener {
 
     public void updateLocation(Location location) {
         mCurrentLocation = location;
-        mArrow.setRotation(mCurrentLocation.bearingTo(mTargetLocation));
+        float degree = mCurrentLocation.bearingTo(mTargetLocation);
+        Log.d(TAG, "updateLocation: degree = " + degree);
+        mArrow.setRotation(degree);
         mDistance = (int) mCurrentLocation.distanceTo(mTargetLocation);
         mDistanceTxt.setText(mDistance + "m");
         if (mDistance <= 10) {
