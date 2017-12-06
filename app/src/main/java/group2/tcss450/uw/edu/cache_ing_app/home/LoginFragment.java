@@ -55,7 +55,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         b.setOnClickListener(this);
         TextView fp = v.findViewById(R.id.forgot_pass);
         fp.setOnClickListener(this);
-        loadPreferences();
+        loadCB();
+        if (mCheckbox.isChecked()) {
+            loadPreferences();
+        }
         return v;
     }
 
@@ -133,13 +136,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         void loginFragmentInteraction(String c, String c2);
     }
 
-    private void loadPreferences() {
+    private void loadCB () {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         boolean boxValue = sharedPreferences.getBoolean("CHECKBOX", false);
+
+        mCheckbox.setChecked(boxValue);
+    }
+
+    private void loadPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         String userName = sharedPreferences.getString("USERNAME", "");
         String password = sharedPreferences.getString("PASSWORD", "");
 
-        mCheckbox.setChecked(boxValue);
         userNameLogin.setText(userName);
         passwordLogin.setText(password);
     }

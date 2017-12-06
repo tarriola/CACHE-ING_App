@@ -137,6 +137,14 @@ public class MainActivity extends AppCompatActivity implements
             } else if (result.startsWith("{\"code\":200")) {
                 Toast.makeText(getApplicationContext(), "Account not verified.", Toast.LENGTH_LONG)
                         .show();
+                VerificationFragment verifyFragment = new VerificationFragment();
+                Bundle args = new Bundle();
+                args.putString("email", email);
+                verifyFragment.setArguments(args);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, verifyFragment)
+                        .commit();
             } else if (result.startsWith("{\"code\":300")) {
                 Toast.makeText(getApplicationContext(), "Email and password doesn't match", Toast.LENGTH_LONG)
                         .show();

@@ -8,7 +8,7 @@
 
     <string name="password_textview">Password</string>
     <string name="password_editText">Enter password...</string>
-    <string name="pick_password">Pick a password</string>
+    <string name="pick_password">6-12 characters, at least one #</string>
     <string name="confirm_password">Confirm Password</string>
 
     <string name="login_button1">Login</string>
