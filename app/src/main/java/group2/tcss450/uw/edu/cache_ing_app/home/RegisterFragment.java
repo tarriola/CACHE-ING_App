@@ -81,31 +81,42 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
 
             if(v.getId() == R.id.register_button_in_registration) {
 
-                EditText userEmail = (EditText) getView().findViewById(R.id.email_editText);
-                EditText firstName = (EditText) getView().findViewById(R.id.enter_first_name);
-                EditText lastName = (EditText) getView().findViewById(R.id.enter_last_name);
-                EditText userPassword = (EditText) getView().findViewById(R.id.reg_password);
-                EditText confirmPass = (EditText) getView().findViewById(R.id.confirm_pass);
+                EditText userEmail = getView().findViewById(R.id.email_editText);
+                EditText firstName =  getView().findViewById(R.id.enter_first_name);
+                EditText lastName = getView().findViewById(R.id.enter_last_name);
+                EditText userPassword = getView().findViewById(R.id.reg_password);
+                EditText confirmPass = getView().findViewById(R.id.confirm_pass);
 
                 String userName = userEmail.getText().toString();
                 String fName = firstName.getText().toString();
                 String lName = lastName.getText().toString();
                 String password = userPassword.getText().toString();
                 String confirmPassword = confirmPass.getText().toString();
+                int ifCounter = 0;
 
                 if(userName.isEmpty() || (!(userName.contains("@") && userName.contains(".")))) {
                     userEmail.setError("Enter a valid email");
-                } if (fName.isEmpty()) {
+                    ifCounter++;
+                }
+                if (fName.isEmpty()) {
                     firstName.setError("Enter your first name");
-                } if (lName.isEmpty()) {
+                    ifCounter++;
+                }
+                if (lName.isEmpty()) {
                     lastName.setError("Enter your last name");
-                } if (password.isEmpty() || (!(password.length() >= 6 && password.length() <= 12))
+                    ifCounter++;
+                }
+                if (password.isEmpty() || (!(password.length() >= 6 && password.length() <= 12))
                         || (!(password.matches(".*\\d+.*")))) {
                     userPassword.setError("Password must be between 6-12 characters long and " +
                             "have at least one number.");
-                } if (!password.equals(confirmPassword)) {
+                    ifCounter++;
+                }
+                if (!password.equals(confirmPassword)) {
                     confirmPass.setError("Passwords do not match");
-                } else {
+                    ifCounter++;
+                }
+                if (ifCounter == 0){
 
                     mListener.registerFragmentInteraction(userName, password, fName, lName);
                 }

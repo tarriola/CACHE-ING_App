@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements
             } else if (result.startsWith("{\"code\":300")) {
                 Toast.makeText(getApplicationContext(), "Error connecting to the databse", Toast.LENGTH_LONG)
                         .show();
-            }else {
+            } else {
                 //String[] string = result.split("\"");
 
                 VerificationFragment verifyFragment = new VerificationFragment();
