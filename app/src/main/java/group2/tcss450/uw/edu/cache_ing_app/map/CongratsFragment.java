@@ -228,6 +228,7 @@ public class CongratsFragment extends Fragment implements View.OnClickListener {
             }
             return response;
         }
+
         /**
          * onPostExecute for AsyncTask.
          **/
@@ -253,15 +254,18 @@ public class CongratsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * displays a textbox to allow the user to enter a comment
+     * then calls AsyncTask to sign the log.
+     */
     private void showInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Leave a Comment:");
-        // I'm using fragment here so I'm using getView() to provide ViewGroup
-        // but you can provide here any other instance of ViewGroup from your Fragment / Activity
+
         View viewInflated = LayoutInflater.from(getContext()).inflate(R.layout.log_message, (ViewGroup) getView(), false);
-        // Set up the input
+
         final EditText input = (EditText) viewInflated.findViewById(R.id.input);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+
         builder.setView(viewInflated);
 
         // Set up the buttons

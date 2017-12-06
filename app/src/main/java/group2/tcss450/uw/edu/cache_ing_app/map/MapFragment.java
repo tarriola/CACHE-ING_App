@@ -81,8 +81,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-//        mLat = 47.2529;
-//        mLng = -122.4443;
         mIsAvailable = false;
 
         mTargetLocation = new Location("Tacoma");
@@ -108,10 +106,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: executing task;");
-//                placesFab.setEnabled(false);
                 AsyncTask<String, Void, String> task = new PlacesWebServiceTask();
                 task.execute(PLACES_URL);
-//                Log.d(TAG, "onClick: task done executing");
             }
         });
 
@@ -140,6 +136,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mListener = null;
     }
 
+
+    /**
+     * Updates the location on the map and checks to see if a target location is selected.
+     * If there is a target location and you're in the vicinity of location then sends the
+     * interaction to the main.
+     * @param location
+     */
     public void updateLocation(Location location) {
         mLat = location.getLatitude();
         mLng = location.getLongitude();
@@ -157,10 +160,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    /**
+     * returns the google map
+     * @return
+     */
     public GoogleMap getMap() {
         return mGoogleMap;
     }
 
+    /**
+     * Sets the current location.
+     * @param location
+     */
     public void setLocation(Location location) {
         mMyLocation = location;
     }
@@ -187,26 +198,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     }
                 }
 
-//                Toast.makeText(getContext(), marker.getId(), Toast.LENGTH_SHORT).show();
-
-
                 return true;
             }
         });
-//        mTargetMarker = mGoogleMap.addMarker(new MarkerOptions()
-//                .title("Tacom")
-//                .position(placeLatLng));
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mMyLocation.getLatitude(), mMyLocation.getLongitude()), ZOOM));
-//
-//        mGoogleMap.addMarker(new MarkerOptions().title("Tacoma")
-//                    .position(new LatLng(mTargetLocation.getLatitude(), mTargetLocation.getLongitude()))
-//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
+        // calls the Async task to load the locations.
         LocationsWebServiceTask task = new LocationsWebServiceTask();
         task.execute(PARTIAL_URL);
 
     }
 
+    /**
+     * Opens an option dialog box to set the target location.
+     */
     private void optionBox() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Confirm");
@@ -287,7 +291,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         protected void onPostExecute(String result) {
             Log.d(TAG, "onPostExecute: begin parsing json: " + result);
             PlacesData placesData = new PlacesData(result);
-//            getView().findViewById(R.id.placesFab).setEnabled(true);
             showPlacesList(placesData);
 
         }
@@ -327,7 +330,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     /**
-     * Async web service task for GooglePlaces.
+     * Async web service task for Locations from database.
      **/
     private class LocationsWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "locations.php";
@@ -367,6 +370,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * Parses the data to extract the locations and their names.
+     * @param data
+     */
     private void getLocations(String data) {
         try {
             JSONObject json = new JSONObject(data);
@@ -389,6 +396,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    /**
+     * Load the locations on to the google map.
+     */
     private void loadLocations() {
         for (LocationData location : mDataLocations) {
             mGoogleMap.addMarker(new MarkerOptions()
@@ -396,10 +406,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .position(new LatLng(location.lat, location.lng))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-            Log.d(TAG, "loadLocations: marker: " + location.lat + ", " + location.lng);
         }
     }
 
+    /**
+     * Class to hold the location data
+     */
     private class LocationData {
         int id;
         String name;

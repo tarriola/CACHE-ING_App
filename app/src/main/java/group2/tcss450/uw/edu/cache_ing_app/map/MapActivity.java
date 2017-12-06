@@ -70,8 +70,6 @@ public class MapActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
@@ -84,8 +82,6 @@ public class MapActivity extends AppCompatActivity implements
 
         mEmail = getIntent().getStringExtra("email");
         mAccountID = getIntent().getIntExtra("id", 0);
-//        Log.d(TAG, "onCreate: email = " + mEmail);
-//        Log.d(TAG, "onCreate: accountID = " + mAccountID);
 
         mLocationRequest = new LocationRequest();
         // Sets the desired interval for active location updates. This interval is
@@ -112,16 +108,6 @@ public class MapActivity extends AppCompatActivity implements
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragmentContainer, mMapFragment)
                     .commit();
-
-
-
-
-//        initMap();
-
-    }
-
-    private void initMap() {
-
 
     }
 
@@ -225,9 +211,6 @@ public class MapActivity extends AppCompatActivity implements
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
 //                    // locations-related task you need to do.
-//                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                        return;
-//                    }
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                             != PackageManager.PERMISSION_GRANTED &&
                             ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -261,8 +244,6 @@ public class MapActivity extends AppCompatActivity implements
                 == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, COURSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-//            Log.d(TAG, "startLocationUpdates: " + mCurrentLocation.getLatitude() + ", " + mCurrentLocation.getLongitude());
-//            initMap();
         }
     }
 
@@ -317,6 +298,7 @@ public class MapActivity extends AppCompatActivity implements
         mLocationID = locationID;
         Bundle args = new Bundle();
         switch (msg) {
+            // calls the congrats fragment
             case "congrats":
                 CongratsFragment congratsFragment = new CongratsFragment();
                 args.putInt("locationID", mLocationID);
@@ -327,7 +309,7 @@ public class MapActivity extends AppCompatActivity implements
                         .replace(R.id.fragmentContainer, congratsFragment)
                         .commit();
                 break;
-
+            // calls arrow fragment.
             case "arrow":
                 mArrowFragment = new ArrowFragment();
                 args.putDouble("mlat", mCurrentLocation.getLatitude());
@@ -348,6 +330,7 @@ public class MapActivity extends AppCompatActivity implements
 
     @Override
     public void onCongratsFragmentInteraction(String message) {
+        // open arrow fragment
         if (mMapFragment == null) {
             mMapFragment = new MapFragment();
             mMapFragment.setLocation(mCurrentLocation);
@@ -362,6 +345,7 @@ public class MapActivity extends AppCompatActivity implements
     @Override
     public void arrowFragmentInteraction(String message) {
         switch (message) {
+            // call the mapfragment
             case "map":
                 if (mMapFragment == null) {
                     mMapFragment = new MapFragment();
@@ -372,6 +356,7 @@ public class MapActivity extends AppCompatActivity implements
                         .commit();
                 break;
 
+            // call the congrats fragment
             case "congrats":
                 CongratsFragment congratsFragment = new CongratsFragment();
                 Bundle args = new Bundle();

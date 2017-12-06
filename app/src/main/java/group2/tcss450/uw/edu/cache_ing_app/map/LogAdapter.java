@@ -16,12 +16,13 @@ import group2.tcss450.uw.edu.cache_ing_app.R;
 
 /**
  * Created by Vincent on 11/22/2017.
+ *
+ * Class used to hold all the information displayed as a list.
  */
 
 public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
 
     private final ArrayList<JSONObject> mValues;
-
 
     public LogAdapter (ArrayList<JSONObject> list) {
         mValues = list;
@@ -35,23 +36,6 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
         return vh;
     }
 
-//    @Override
-//    public void onBindViewHolder(ViewHolder holder, int position) {
-//        JSONObject temp = mValues.get(position);
-//        try {
-//            String name = temp.getString("firstname") + " " + temp.getString("firstname");
-//            holder.firstName.setText(temp.getString("firstname"));
-//            holder.lastName.setText(temp.getString("lastname"));
-//            if (temp.has("nickname")) {
-//                holder.nickName.setText(temp.getString("nickname"));
-//            }
-//            if (temp.has("message")) {
-//                holder.message.setText(temp.getString("message"));
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         JSONObject temp = mValues.get(position);
@@ -75,22 +59,10 @@ public class LogAdapter extends RecyclerView.Adapter<LogAdapter.ViewHolder> {
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-//    public class ViewHolder extends RecyclerView.ViewHolder {
-//        public final TextView firstName;
-//        public final TextView lastName;
-//        public final TextView nickName;
-//        public final TextView message;
-//
-//        public ViewHolder(View itemView) {
-//            super(itemView);
-//            firstName = itemView.findViewById(R.id.log_first_name);
-//            lastName = itemView.findViewById(R.id.log_last_name);
-//            nickName = itemView.findViewById(R.id.log_nick_name);
-//            message = itemView.findViewById(R.id.log_message);
-//
-//        }
-//    }
 
+    /**
+     * A class used to hold the information of each log
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView name;
         public final TextView nickname;

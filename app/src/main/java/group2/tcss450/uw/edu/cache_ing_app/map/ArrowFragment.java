@@ -37,7 +37,7 @@ public class ArrowFragment extends Fragment implements
     private Button mToButton;
     private Location mCurrentLocation;
     private Location mTargetLocation;
-    private int mDistance, mDegrees;
+    private int mDistance;
 
 
     public ArrowFragment() {
@@ -123,7 +123,6 @@ public class ArrowFragment extends Fragment implements
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void arrowFragmentInteraction(String message);
     }
 }
